@@ -38,6 +38,54 @@
 			"revisionTime": "2019-02-10T07:39:40Z"
 		},
 		{
+			"checksumSHA1": "7x1a8CvEGgF8O3jsekeyRpNBKrg=",
+			"path": "github.com/golang/protobuf/proto",
+			"revision": "c823c79ea1570fb5ff454033735a8e68575d1d0f",
+			"revisionTime": "2019-02-05T22:20:52Z"
+		},
+		{
+			"checksumSHA1": "cQvjaQ6YsQ2s/QOmJeSGMjbyLhU=",
+			"path": "github.com/golang/protobuf/proto/proto3_proto",
+			"revision": "c823c79ea1570fb5ff454033735a8e68575d1d0f",
+			"revisionTime": "2019-02-05T22:20:52Z"
+		},
+		{
+			"checksumSHA1": "Ap3fxoENMwxwOM77e56TlCVt+7o=",
+			"path": "github.com/golang/protobuf/proto/test_proto",
+			"revision": "c823c79ea1570fb5ff454033735a8e68575d1d0f",
+			"revisionTime": "2019-02-05T22:20:52Z"
+		},
+		{
+			"checksumSHA1": "WOkXetG3AqJnfVVuqTJvdukcHps=",
+			"path": "github.com/golang/protobuf/protoc-gen-go/descriptor",
+			"revision": "c823c79ea1570fb5ff454033735a8e68575d1d0f",
+			"revisionTime": "2019-02-05T22:20:52Z"
+		},
+		{
+			"checksumSHA1": "qspo5Xz9Snq5nzKzuQGnDL5LTSU=",
+			"path": "github.com/golang/protobuf/ptypes",
+			"revision": "c823c79ea1570fb5ff454033735a8e68575d1d0f",
+			"revisionTime": "2019-02-05T22:20:52Z"
+		},
+		{
+			"checksumSHA1": "2/Xg4L9IVGQRJB8zCELZx7/Z4HU=",
+			"path": "github.com/golang/protobuf/ptypes/any",
+			"revision": "c823c79ea1570fb5ff454033735a8e68575d1d0f",
+			"revisionTime": "2019-02-05T22:20:52Z"
+		},
+		{
+			"checksumSHA1": "RE9rLveNHapyMKQC8p10tbkUE9w=",
+			"path": "github.com/golang/protobuf/ptypes/duration",
+			"revision": "c823c79ea1570fb5ff454033735a8e68575d1d0f",
+			"revisionTime": "2019-02-05T22:20:52Z"
+		},
+		{
+			"checksumSHA1": "seEwY2xETpK9yHJ9+bHqkLZ0VMU=",
+			"path": "github.com/golang/protobuf/ptypes/timestamp",
+			"revision": "c823c79ea1570fb5ff454033735a8e68575d1d0f",
+			"revisionTime": "2019-02-05T22:20:52Z"
+		},
+		{
 			"checksumSHA1": "OaLbzsR2JuaJ6wM4uK0tvSxELy8=",
 			"path": "github.com/jinzhu/gorm",
 			"revision": "906799fef2f895116d915e1793314ab9053b400d",
@@ -101,7 +149,25 @@
 			"path": "github.com/mattn/go-sqlite3",
 			"revision": "906799fef2f895116d915e1793314ab9053b400d",
 			"revisionTime": "2019-02-10T07:39:40Z"
+		},
+		{
+			"checksumSHA1": "Kf0sJhBPqzcr99Zncl2oBDuB51Q=",
+			"path": "github.com/wwcd/grpc-lb/cmd/basegrpc",
+			"revision": "04ef506b60a053def39b6193474b24089a5cc5e0",
+			"revisionTime": "2019-02-21T03:57:20Z"
+		},
+		{
+			"checksumSHA1": "4cSDaI/lOm9XDENcmhPpdOSjfr8=",
+			"path": "github.com/wwcd/grpc-lb/cmd/helloworld",
+			"revision": "04ef506b60a053def39b6193474b24089a5cc5e0",
+			"revisionTime": "2019-02-21T03:57:20Z"
+		},
+		{
+			"checksumSHA1": "JTcJCX2fjhaZhMlHXFBsBwF0Ks0=",
+			"path": "github.com/wwcd/grpc-lb/etcdv3",
+			"revision": "04ef506b60a053def39b6193474b24089a5cc5e0",
+			"revisionTime": "2019-02-21T03:57:20Z"
 		}
 	],
-	"rootPath": "github.com/wwcd/grpc-lb"
+	"rootPath": "grpc-lb"
 }
