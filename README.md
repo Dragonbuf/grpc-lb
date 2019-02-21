@@ -1,40 +1,16 @@
 
-[![Build Status](https://travis-ci.org/wwcd/grpc-lb.svg?branch=master)](https://travis-ci.org/wwcd/grpc-lb)
-
-# 说明
-
-[gRPC服务发现&负载均衡](https://segmentfault.com/a/1190000008672912)中的例子, 修订如下问题
-
-- register中重复PUT, watch时没有释放导致的内存泄漏
-- 退出时不能正常unregister
-- 接收到etcd的delete事件时，未删除数据[#1](https://github.com/wwcd/grpc-lb/issues/1)
-
 # 测试
 
 ## 启动ETCD
+ubuntu:
+apt install etcd
+centos:
+yum install etcd
+mac:
+brew install etcd
 
-	# https://coreos.com/etcd/docs/latest/op-guide/container.html#docker
 
-	export NODE1=192.168.1.21
-
-	docker volume create --name etcd-data
-	export DATA_DIR="etcd-data"
-
-	REGISTRY=quay.io/coreos/etcd
-	# available from v3.2.5
-	# REGISTRY=gcr.io/etcd-development/etcd
-
-	docker run -d\
-	  -p 2379:2379 \
-	  -p 2380:2380 \
-	  --volume=${DATA_DIR}:/etcd-data \
-	  --name etcd ${REGISTRY}:latest \
-	  /usr/local/bin/etcd \
-	  --data-dir=/etcd-data --name node1 \
-	  --initial-advertise-peer-urls http://${NODE1}:2380 --listen-peer-urls http://0.0.0.0:2380 \
-	  --advertise-client-urls http://${NODE1}:2379 --listen-client-urls http://0.0.0.0:2379 \
-	  --initial-cluster node1=http://${NODE1}:2380
-
+etcd localhost:2379
 ## 启动测试程序
 
     # 分别启动服务端
