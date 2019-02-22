@@ -3,14 +3,14 @@ package main
 import (
 	"context"
 	"errors"
-	"github.com/wwcd/grpc-lb/cmd/basegrpc"
 	"google.golang.org/grpc"
+	"grpc-lb/cmd/basegrpc"
 	model2 "grpc-lb/cmd/server/templateStore/model"
 	ts "grpc-lb/cmd/server/templateStore/proto"
 )
 
 func main() {
-	var base = basegrpc.BaseGrpc{ServiceName: "templateStoreService"}
+	var base = basegrpc.InitGrpc{ServiceName: "templateStore"}
 	lis := base.NewBaseGrpc()
 
 	s := grpc.NewServer()

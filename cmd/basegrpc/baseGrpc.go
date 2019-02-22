@@ -19,21 +19,23 @@ var (
 	//reg  = flag.String("reg", "http://39.105.90.215:2379", "register etcd address")
 )
 
-
-
-type BaseGrpc struct {
-
+type InitGrpc struct {
+	ServiceName string
 }
+
 //TODO auto find port
-func (b *BaseGrpc)NewBaseGrpc() net.Listener    {
+func (b *InitGrpc) NewBaseGrpc() net.Listener {
 	flag.Parse()
 
-	lis, err := net.Listen("tcp", net.JoinHostPort(getLocalIp(), *port))
+	*host = getLocalIp()
+	*port = getLocalPort()
+
+	lis, err := net.Listen("tcp", net.JoinHostPort(*host, *port))
 	if err != nil {
 		panic(err)
 	}
 
-	err = grpclb.Register(*serv, *host, *port, *reg, time.Second*10, 15)
+	err = grpclb.Register(b.ServiceName, *host, *port, *reg, time.Second*10, 15)
 	if err != nil {
 		panic(err)
 	}
@@ -52,7 +54,6 @@ func (b *BaseGrpc)NewBaseGrpc() net.Listener    {
 	return lis
 }
 
-
 func getLocalIp() string {
 	addrSlice, err := net.InterfaceAddrs()
 	if nil != err {
@@ -66,4 +67,8 @@ func getLocalIp() string {
 		}
 	}
 	return "localhost"
+}
+
+func getLocalPort() string {
+	return "50001"
 }

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package site;
+
+service Site {
+    rpc Show(showRequest) returns (showReply) {
+
+    }
+}
+
+message showRequest {
+    int32 id = 1;
+    string url = 2;
+}
+
+message showReply{
+    int32 id = 1;
+    string title = 2;
+    string secondTitle = 3;
+    string url = 4;
+    string icp = 5;
+    string  logoUrl = 6;
+    string owner = 7;
+    string email = 8;
+    string phone = 9;
+    string createTime = 10;
+    string updateTime = 11;
+}
