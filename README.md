@@ -1,6 +1,6 @@
 
 # 测试
-
+    govendor add +external
 ## 启动ETCD
 ubuntu:
 apt install etcd

@@ -4,11 +4,15 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/grpc-ecosystem/go-grpc-prometheus"
+	_ "github.com/grpc-ecosystem/go-grpc-prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	pb "github.com/wwcd/grpc-lb/cmd/helloworld"
 	grpclb "github.com/wwcd/grpc-lb/etcdv3"
 	"google.golang.org/grpc"
 	"log"
 	"net"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -46,9 +50,21 @@ func main() {
 	}()
 
 	log.Printf("starting hello service at %s", *port)
-	s := grpc.NewServer()
-	pb.RegisterGreeterServer(s, &server{})
 
+	s := grpc.NewServer(
+		grpc.StreamInterceptor(grpc_prometheus.StreamServerInterceptor),
+		grpc.UnaryInterceptor(grpc_prometheus.UnaryServerInterceptor),
+	)
+	// Register your gRPC service implementations.
+	pb.RegisterGreeterServer(s, &server{})
+	// After all your registrations, make sure all of the Prometheus metrics are initialized.
+	grpc_prometheus.Register(s)
+
+	// Register Prometheus metrics handler.
+	http.Handle("/metrics", promhttp.Handler())
+
+	//s := grpc.NewServer()
+	//pb.RegisterGreeterServer(s, &server{})
 
 	s.Serve(lis)
 }
@@ -61,8 +77,6 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloRe
 	fmt.Printf("%v: Receive is %s\n", time.Now(), in.Name)
 	return &pb.HelloReply{Message: "Hello " + in.Name + " from " + net.JoinHostPort(*host, *port)}, nil
 }
-
-
 
 func getLocalIp() string {
 	addrSlice, err := net.InterfaceAddrs()
