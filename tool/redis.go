@@ -1,6 +1,7 @@
 package tool
 
 import (
+	"fmt"
 	"github.com/gomodule/redigo/redis"
 	"time"
 )
@@ -27,6 +28,7 @@ var (
 )
 
 func init() {
+	fmt.Println("redis pool init")
 	RedisPool = &redis.Pool{
 		MaxIdle:     maxIdle,
 		MaxActive:   maxActive,
@@ -40,6 +42,7 @@ func init() {
 				redis.DialReadTimeout(readTimeout),
 				redis.DialWriteTimeout(writeTimeout))
 			if err != nil {
+				panic(err)
 				return nil, err
 			}
 			return con, nil
@@ -54,4 +57,5 @@ func test() {
 	if conn.Err() != nil {
 		//TODO
 	}
+
 }
