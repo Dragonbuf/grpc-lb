@@ -18,10 +18,6 @@ var (
 	reg  = flag.String("reg", "http://localhost:2379", "register etcd address")
 )
 
-
-
-
-
 func main() {
 	flag.Parse()
 	r := grpclb.NewResolver(*serv)

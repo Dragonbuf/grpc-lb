@@ -23,7 +23,7 @@ var (
 	serv = flag.String("service", "hello_service", "service name")
 	host = flag.String("host", "localhost", "listening host")
 	port = flag.String("port", "50001", "listening port")
-	reg  = flag.String("reg", "http://192.168.1.171:2379", "register etcd address")
+	reg  = flag.String("reg", "http://localhost:2379", "register etcd address")
 	//reg  = flag.String("reg", "http://39.105.90.215:2379", "register etcd address")
 )
 

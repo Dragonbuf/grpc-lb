@@ -49,6 +49,7 @@ func (w *watcher) Next() ([]*naming.Update, error) {
 	defer cancel()
 	for wresp := range rch {
 		for _, ev := range wresp.Events {
+			fmt.Println(ev)
 			switch ev.Type {
 			case mvccpb.PUT:
 				return []*naming.Update{{Op: naming.Add, Addr: string(ev.Kv.Value)}}, nil
