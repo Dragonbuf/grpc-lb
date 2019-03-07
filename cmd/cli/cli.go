@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"grpc-lb/cmd/config"
 	"strconv"
 	"time"
 
@@ -15,7 +16,7 @@ import (
 
 var (
 	serv = flag.String("service", "hello_service", "service name")
-	reg  = flag.String("reg", "http://localhost:2379", "register etcd address")
+	reg  = flag.String("reg", config.EtcDHost, "register etcd address")
 )
 
 func main() {

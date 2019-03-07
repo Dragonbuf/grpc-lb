@@ -10,6 +10,7 @@ import (
 	pb "github.com/wwcd/grpc-lb/cmd/helloworld"
 	grpclb "github.com/wwcd/grpc-lb/etcdv3"
 	"google.golang.org/grpc"
+	"grpc-lb/cmd/config"
 	"log"
 	"net"
 	"net/http"
@@ -24,7 +25,7 @@ var (
 	serv = flag.String("service", "hello_service", "service name")
 	host = flag.String("host", "localhost", "listening host")
 	port = flag.String("port", "50001", "listening port")
-	reg  = flag.String("reg", "http://localhost:2379", "register etcd address")
+	reg  = flag.String("reg", config.EtcDHost, "register etcd address")
 	//reg  = flag.String("reg", "http://39.105.90.215:2379", "register etcd address")
 )
 
