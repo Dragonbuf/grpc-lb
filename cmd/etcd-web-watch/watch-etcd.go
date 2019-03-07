@@ -7,6 +7,7 @@ import (
 	etcd3 "github.com/coreos/etcd/clientv3"
 	"github.com/coreos/etcd/mvcc/mvccpb"
 	_ "github.com/coreos/etcd/mvcc/mvccpb"
+	"log"
 	"net/http"
 	_ "net/http"
 	"strings"
@@ -74,6 +75,12 @@ func (svr *ServiceMap) AddMap(svrName string, svrAddr string) {
 }
 
 func (svr *ServiceMap) DelMap(svrName string, svrAddr string) {
+
+	if svr.svrMap[svrName] == nil {
+		log.Fatal("not found this service:" + svrName)
+		return
+	}
+
 	for _, v := range svr.svrMap[svrName].Service {
 		if v.ServiceAddr == svrAddr && v.IsExpire == false {
 			v.IsExpire = true

@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	var base = basegrpc.InitGrpc{ServiceName: "templateStore"}
+	var base = basegrpc.InitGrpc{ServiceName: "template_store_service"}
 	lis := base.NewBaseGrpc()
 
 	s := grpc.NewServer()

@@ -3,14 +3,12 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
 	"log"
 	"net/http"
 	"os"
 	"strings"
-	"time"
-
-	"golang.org/x/net/context"
-	"google.golang.org/grpc"
 
 	"github.com/grpc-ecosystem/go-grpc-prometheus"
 	pb "github.com/grpc-ecosystem/go-grpc-prometheus/examples/grpc-server-with-prometheus/protobuf"
@@ -60,7 +58,7 @@ func main() {
 				log.Printf("You should to stop the process")
 				return
 			}
-			time.Sleep(3 * time.Second)
+			//time.Sleep(3 * time.Second)
 		}
 	}()
 	scanner := bufio.NewScanner(os.Stdin)

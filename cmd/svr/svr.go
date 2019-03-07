@@ -13,6 +13,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"os/signal"
 	"syscall"
@@ -65,8 +66,11 @@ func main() {
 
 	//s := grpc.NewServer()
 	//pb.RegisterGreeterServer(s, &server{})
-
+	go func() {
+		http.ListenAndServe("localhost:13001", nil)
+	}()
 	s.Serve(lis)
+
 }
 
 // server is used to implement helloworld.GreeterServer.
