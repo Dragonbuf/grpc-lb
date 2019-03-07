@@ -56,7 +56,7 @@ func (b *InitGrpc) NewBaseGrpc() net.Listener {
 		os.Exit(1)
 	}()
 
-	log.Printf("starting hello service at %s", *port)
+	log.Printf("\n starting %s at %s in etcd %s \n", b.ServiceName, *port, *reg)
 
 	return lis
 }
