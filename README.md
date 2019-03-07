@@ -23,6 +23,10 @@ etcd  将会启动在：localhost:2379
     # 启动客户端
     go run cmd/cli/cli.go
     
+## 使用配置文件
+    cp config-eaxmple　config
+    cd config
+    mv config-eaxmple.go config.go
 ## 使用 redis mysql
     在　tool　下，有相应类
 ## 使用 baseGrpc

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	etcd3 "github.com/coreos/etcd/clientv3"
 	grpclb "github.com/wwcd/grpc-lb/etcdv3"
+	"grpc-lb/cmd/config"
 	"log"
 	"net"
 	"os"
@@ -20,7 +21,7 @@ var (
 	serv = flag.String("service", "hello_service", "service name")
 	host = flag.String("host", "localhost", "listening host")
 	port = flag.String("port", "50001", "listening port")
-	reg  = flag.String("reg", "http://192.168.0.102:2379", "register etcd address")
+	reg  = flag.String("reg", config.EtcDHost, "register etcd address")
 	//reg  = flag.String("reg", "http://39.105.90.215:2379", "register etcd address")
 	prefix = "/etcd3_naming"
 )
