@@ -20,7 +20,7 @@ var (
 	RedisMaxIdleTimeout = 5 * time.Second
 
 	// mysql
-	MysqlMasterDns    = "root:1234/makaplatv4?charset=utf8&parseTime=True&loc=Local"
+	MysqlMasterDns    = "root:1234@/makaplatv4?charset=utf8&parseTime=True&loc=Local"
 	MysqlMaxIdleConns = 100
 	MysqlMaxOpenConns = 1000
 )
