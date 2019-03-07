@@ -36,3 +36,10 @@ etcd  将会启动在：localhost:2379
 	s.Serve(cli)
 ## 　使用 proto 编译出　go 服务端、客户端代码
     protoc --go_out=plugins=grpc:. hello.proto
+    
+ ### todo list
+    0 服务部署上线
+    1 服务熔断  (可参考 go-kit + Hystrix)
+    2 服务监控  (可参考 prometheus + alertmanager + grafana)
+    3 服务降级
+    4 node + php 完整 client　demo
