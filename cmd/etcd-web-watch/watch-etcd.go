@@ -95,7 +95,7 @@ var svrMap ServiceMap
 func Start() {
 
 	var endpoint []string
-	endpoint = append(endpoint, "localhost:2379")
+	endpoint = append(endpoint, "http://localhost:2379")
 
 	client, err := etcd3.New(etcd3.Config{
 		Endpoints: endpoint,

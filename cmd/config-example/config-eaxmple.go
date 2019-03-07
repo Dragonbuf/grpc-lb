@@ -9,7 +9,7 @@ var (
 	IdleTimeout 空闲连接超时时间，但应该设置比redis服务器超时时间短。否则服务端超时了，客户端保持着连接也没用。
 	Wait 这是个很有用的配置:如果超过最大连接，是报错，还是等待。
 	*/
-	RedisHost           = "localhost:6379"
+	RedisHost           = "39.105.90.215:6379"
 	RedisPassword       = ""
 	RedisDb             = 0
 	RedisConTimeout     = 5 * time.Second
@@ -24,5 +24,6 @@ var (
 	MysqlMaxIdleConns = 100
 	MysqlMaxOpenConns = 1000
 
+	//可用逗号分割，开启etcd 集群
 	EtcDHost = "http://localhost:2379"
 )
