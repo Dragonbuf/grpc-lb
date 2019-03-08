@@ -1,4 +1,4 @@
-package basegrpc
+package baseServer
 
 import (
 	"context"
@@ -18,31 +18,38 @@ import (
 )
 
 var (
-	serv = flag.String("service", "hello_service", "service name")
-	host = flag.String("host", "localhost", "listening host")
-	port = flag.String("port", "50001", "listening port")
-	reg  = flag.String("reg", config.EtcDHost, "register etcd address")
-	//reg  = flag.String("reg", "http://39.105.90.215:2379", "register etcd address")
+	serv   = flag.String("service", "", "service name")
+	host   = flag.String("host", "", "listening host")
+	port   = flag.String("port", "", "listening port")
+	etcd   = flag.String("etcd", config.EtcDHost, "register etcd address")
 	prefix = "/etcd3_naming"
 )
 
-type InitGrpc struct {
+type InitServer struct {
 	ServiceName string
 }
 
-//TODO auto find port
-func (b *InitGrpc) NewBaseGrpc() net.Listener {
+func NewServer(serName string) *InitServer {
+	return &InitServer{ServiceName: serName}
+}
+
+func (b *InitServer) GetAliveServer() net.Listener {
 	flag.Parse()
 
-	*host = getLocalIp()
-	*port = getLocalPort()
+	if *host == "" {
+		*host = getLocalIp()
+	}
+
+	if *port == "" {
+		*port = getLocalPort()
+	}
 
 	lis, err := net.Listen("tcp", net.JoinHostPort(*host, *port))
 	if err != nil {
 		panic(err)
 	}
 
-	err = grpclb.Register(b.ServiceName, *host, *port, *reg, time.Second*10, 15)
+	err = grpclb.Register(b.ServiceName, *host, *port, *etcd, time.Second*10, 15)
 	if err != nil {
 		panic(err)
 	}
@@ -53,10 +60,11 @@ func (b *InitGrpc) NewBaseGrpc() net.Listener {
 		s := <-ch
 		log.Printf("receive signal '%v'", s)
 		grpclb.UnRegister()
+		defer lis.Close()
 		os.Exit(1)
 	}()
 
-	log.Printf("\n starting %s at %s in etcd %s \n", b.ServiceName, *port, *reg)
+	log.Printf("\n starting %s at %s in etcd %s \n", b.ServiceName, *port, *etcd)
 
 	return lis
 }
@@ -78,7 +86,7 @@ func getLocalIp() string {
 
 func getLocalPort() string {
 	var endpoint []string
-	endpoint = append(endpoint, *reg)
+	endpoint = append(endpoint, *etcd)
 
 	client, err := etcd3.New(etcd3.Config{
 		Endpoints: endpoint,

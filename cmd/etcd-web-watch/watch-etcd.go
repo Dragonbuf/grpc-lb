@@ -24,7 +24,6 @@ type ServiceList struct {
 }
 
 type ServiceAddrs struct {
-	IsExpire    bool
 	ServiceAddr string
 }
 
@@ -38,9 +37,6 @@ func (svr *ServiceMap) AddMap(svrName string, svrAddr string) {
 	if svr.svrMap[svrName] != nil {
 		for _, v := range svr.svrMap[svrName].Service {
 			if v.ServiceAddr == svrAddr {
-				if v.IsExpire == true {
-					v.IsExpire = false
-				}
 				svr.svrMap[svrName].AliveService++
 				isHave = true
 			}
@@ -48,7 +44,7 @@ func (svr *ServiceMap) AddMap(svrName string, svrAddr string) {
 
 		// // 已经注册了此服务，但是没有此地址
 		if !isHave {
-			addr := &ServiceAddrs{false, svrAddr}
+			addr := &ServiceAddrs{svrAddr}
 			svr.svrMap[svrName].ServiceName = svrName
 			svr.svrMap[svrName].Service = append(svr.svrMap[svrName].Service, addr)
 			svr.svrMap[svrName].AliveService++
@@ -56,7 +52,7 @@ func (svr *ServiceMap) AddMap(svrName string, svrAddr string) {
 		}
 	} else {
 
-		addr := &ServiceAddrs{false, svrAddr}
+		addr := &ServiceAddrs{svrAddr}
 		s := &ServiceList{}
 
 		s.ServiceName = svrName
@@ -81,9 +77,11 @@ func (svr *ServiceMap) DelMap(svrName string, svrAddr string) {
 		return
 	}
 
-	for _, v := range svr.svrMap[svrName].Service {
-		if v.ServiceAddr == svrAddr && v.IsExpire == false {
-			v.IsExpire = true
+	for k, v := range svr.svrMap[svrName].Service {
+		if v.ServiceAddr == svrAddr {
+			//v.IsExpire = true
+			// 直接删除掉 此 service
+			svr.svrMap[svrName].Service = append(svr.svrMap[svrName].Service[:k], svr.svrMap[svrName].Service[k+1:]...)
 			svr.svrMap[svrName].AliveService--
 		}
 	}
@@ -154,12 +152,4 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(string(jsonD))
 	fmt.Fprintln(w, string(jsonD))
-}
-
-func test() {
-	//svrMap.AddMap("shit","127.0.0.1:9000")
-	//fmt.Println(svrMap)
-	//svrMap.AddMap("shit2","127.0.0.1:9002")
-	//fmt.Println(svrMap)
-	//svrMap.DelMap("shit2","127.0.0.1:9002")
 }

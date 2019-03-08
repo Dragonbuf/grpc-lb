@@ -4,14 +4,14 @@ import (
 	"context"
 	"errors"
 	"google.golang.org/grpc"
-	"grpc-lb/cmd/basegrpc"
+	"grpc-lb/cmd/baseServer"
 	model2 "grpc-lb/cmd/server/templateStore/model"
 	ts "grpc-lb/cmd/server/templateStore/proto"
 )
 
 func main() {
-	var base = basegrpc.InitGrpc{ServiceName: "template_store_service"}
-	lis := base.NewBaseGrpc()
+	var base = baseServer.NewServer("template_store_service")
+	lis := base.GetAliveServer()
 
 	s := grpc.NewServer()
 	ts.RegisterTemplateStoreServer(s, &server{})

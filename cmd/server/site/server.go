@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/gomodule/redigo/redis"
 	"google.golang.org/grpc"
-	"grpc-lb/cmd/basegrpc"
+	"grpc-lb/cmd/baseServer"
 	"grpc-lb/cmd/server/site/proto"
 	"grpc-lb/tool"
 )
@@ -30,8 +30,8 @@ func main() {
 		fmt.Println(res)
 	}
 
-	var base = basegrpc.InitGrpc{ServiceName: "site"}
-	cli := base.NewBaseGrpc()
+	var base = baseServer.NewServer("site")
+	cli := base.GetAliveServer()
 
 	s := grpc.NewServer()
 	site.RegisterSiteServer(s, &Server{})

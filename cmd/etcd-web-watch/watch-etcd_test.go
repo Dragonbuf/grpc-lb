@@ -1,6 +1,7 @@
 package etcd_web_watch
 
 import (
+	"encoding/json"
 	"fmt"
 	_ "github.com/coreos/etcd/mvcc/mvccpb"
 	_ "net/http"
@@ -16,7 +17,6 @@ func TestStart(t *testing.T) {
 
 func TestServiceMap_AddMap(t *testing.T) {
 	svrMap.AddMap("shit", "127.0.0.1:9000")
-	fmt.Println(svrMap)
 
 	if svrMap.svrMap["shit"].TotalService != 1 {
 		t.Error("测试失败")
@@ -45,11 +45,11 @@ func TestServiceMap_DelMap(t *testing.T) {
 	svrMap.AddMap("shit", "127.0.0.1:9000")
 	svrMap.DelMap("shit", "127.0.0.1:9000")
 
+	jsonD, _ := json.Marshal(svrMap.svrMap)
+	fmt.Println(string(jsonD))
 	for _, v := range svrMap.svrMap["shit"].Service {
 		if v.ServiceAddr == "127.0.0.1:9000" {
-			if !v.IsExpire {
-				t.Error("fail")
-			}
+			t.Error("fail")
 		}
 	}
 }

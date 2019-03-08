@@ -16,12 +16,12 @@ etcd  将会启动在：localhost:2379
 ## 启动测试程序
 
     # 分别启动服务端
-    go run cmd/svr/svr.go - port 50001
-    go run cmd/svr/svr.go - port 50002
-    go run cmd/svr/svr.go - port 50003
+    go run cmd/demo/svr/svr.go - port 50001
+    go run cmd/demo/svr/svr.go - port 50002
+    go run cmd/demo/svr/svr.go - port 50003
 
     # 启动客户端
-    go run cmd/cli/cli.go
+    go run cmd/demo/cli/cli.go
     
 ## 使用配置文件
     cp config-eaxmple　config
@@ -41,7 +41,12 @@ etcd  将会启动在：localhost:2379
 ## 　使用 proto 编译出　go 服务端、客户端代码
     protoc --go_out=plugins=grpc:. hello.proto
     
+## 获取可使用 grpc-server (推荐使用此类调用)
+    var base = baseServer.NewServer("template_store_service")
+    lis := base.GetAliveServer()
+    
  ### todo list
+    -1 Graceful shutdown 
     0 服务部署上线
     1 服务熔断  (可参考 go-kit + Hystrix)
     2 服务监控  (可参考 prometheus + alertmanager + grafana)
