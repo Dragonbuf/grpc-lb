@@ -16,16 +16,16 @@ message ShowRequest {
 // The response message containing the greetings
 message ShowReply {
     string templateId = 1;
-        int32 designerId = 2;
-        int32 price = 3;
-        int32 version = 4;
-        int32 star = 5;
-        int32 level = 6;
-        int32 sort = 7;
-        enum status{
-            REVIEWING = 0;
-        }
-        int32 isVipFree = 9;
-        string templateInfo = 10;
-        string templateProperty = 11;
+    int32 designerId = 2;
+    int32 price = 3;
+    int32 version = 4;
+    int32 star = 5;
+    int32 level = 6;
+    int32 sort = 7;
+    enum status {
+        REVIEWING = 0;
+    }
+    int32 isVipFree = 9;
+    string templateInfo = 10;
+    string templateProperty = 11;
 }

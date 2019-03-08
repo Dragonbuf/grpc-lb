@@ -3,7 +3,7 @@ syntax = "proto3";
 package site;
 
 service Site {
-    rpc Show(showRequest) returns (showReply) {
+    rpc Show (showRequest) returns (showReply) {
 
     }
 }
@@ -13,13 +13,13 @@ message showRequest {
     string url = 2;
 }
 
-message showReply{
+message showReply {
     int32 id = 1;
     string title = 2;
     string secondTitle = 3;
     string url = 4;
     string icp = 5;
-    string  logoUrl = 6;
+    string logoUrl = 6;
     string owner = 7;
     string email = 8;
     string phone = 9;
