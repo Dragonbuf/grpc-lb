@@ -29,15 +29,6 @@ etcd  将会启动在：localhost:2379
     mv config-eaxmple.go config.go
 ## 使用 redis mysql
     在　tool　下，有相应类
-## 使用 baseGrpc
-    
-	var base = basegrpc.InitGrpc{ServiceName: "site"}
-	cli := base.NewBaseGrpc()
-
-	s := grpc.NewServer()
-	site.RegisterSiteServer(s, &Server{})
-
-	s.Serve(cli)
 ## 　使用 proto 编译出　go 服务端、客户端代码
     protoc --go_out=plugins=grpc:. hello.proto
     
