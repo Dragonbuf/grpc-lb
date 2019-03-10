@@ -15,6 +15,9 @@ func main() {
 
 	s := grpc.NewServer()
 	ts.RegisterTemplateStoreServer(s, &server{})
+
+
+	base.RegisterServer("template_store_copy_service")
 	_ = s.Serve(lis)
 }
 
@@ -27,7 +30,7 @@ func (t *server) Get(ctx context.Context, in *ts.ShowRequest) (*ts.ShowReply, er
 		return nil, errors.New("templateIdEmpty")
 	}
 
-	var model model2.TemplateStoreModel
+	model := model2.NewTemplateStoreModel()
 	err := model.Get(in.GetTemplateId())
 	if err != nil {
 		return nil, err

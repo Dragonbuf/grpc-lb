@@ -27,12 +27,21 @@ var (
 
 type InitServer struct {
 	ServiceName string
+	ServiceNameSlice []string
 }
+
+type ServiceInfo struct {
+	Name string
+	Host string
+	Port string
+}
+
 
 func NewServer(serName string) *InitServer {
 	return &InitServer{ServiceName: serName}
 }
 
+// 得到一个 tcp 连接, 主动获得端口和内网 ip 地址
 func (b *InitServer) GetAliveServer() net.Listener {
 	flag.Parse()
 
@@ -60,7 +69,6 @@ func (b *InitServer) GetAliveServer() net.Listener {
 		s := <-ch
 		log.Printf("receive signal '%v'", s)
 		grpclb.UnRegister()
-		defer lis.Close()
 		os.Exit(1)
 	}()
 
@@ -68,6 +76,27 @@ func (b *InitServer) GetAliveServer() net.Listener {
 
 	return lis
 }
+
+// 如果要注册第二个服务，则传递服务名称即可
+func (b *InitServer)RegisterServer(name string)  {
+	err := grpclb.Register(name, *host, *port, *etcd, time.Second*10, 15)
+	if err != nil {
+		panic(err)
+	}
+
+	ch := make(chan os.Signal, 1)
+	signal.Notify(ch, syscall.SIGTERM, syscall.SIGINT, syscall.SIGKILL, syscall.SIGHUP, syscall.SIGQUIT)
+	go func() {
+		s := <-ch
+		log.Printf("receive signal '%v'", s)
+		grpclb.UnRegister()
+		os.Exit(1)
+	}()
+
+	log.Printf("\n starting %s at %s in etcd %s \n", name, *port, *etcd)
+}
+
+
 
 func getLocalIp() string {
 	addrSlice, err := net.InterfaceAddrs()

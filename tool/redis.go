@@ -9,6 +9,7 @@ import (
 
 var RedisPool *redis.Pool
 
+
 func init() {
 	fmt.Println("redis pool init")
 	RedisPool = &redis.Pool{

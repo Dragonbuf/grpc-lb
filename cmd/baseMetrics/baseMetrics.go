@@ -27,7 +27,7 @@ func NewMetrics(name, help, label string) *InitMetrics {
 	return init
 }
 
-func (b *InitMetrics) GetGrpcServer() *grpc.Server {
+func (b *InitMetrics) GetGpcServer() *grpc.Server {
 
 	return grpc.NewServer(
 		grpc.StreamInterceptor(b.GrpcMetrics.StreamServerInterceptor()),
