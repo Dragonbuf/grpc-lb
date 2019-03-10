@@ -16,7 +16,6 @@ func main() {
 	s := grpc.NewServer()
 	ts.RegisterTemplateStoreServer(s, &server{})
 
-
 	base.RegisterServer("template_store_copy_service")
 	_ = s.Serve(lis)
 }

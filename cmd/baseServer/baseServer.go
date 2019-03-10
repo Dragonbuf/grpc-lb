@@ -88,7 +88,7 @@ func (b *InitServer)RegisterServer(name string)  {
 	signal.Notify(ch, syscall.SIGTERM, syscall.SIGINT, syscall.SIGKILL, syscall.SIGHUP, syscall.SIGQUIT)
 	go func() {
 		s := <-ch
-		log.Printf("receive signal '%v'", s)
+		log.Printf("receive signal '%v', close service :%s", s, name)
 		grpclb.UnRegister()
 		os.Exit(1)
 	}()
