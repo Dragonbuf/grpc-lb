@@ -82,6 +82,7 @@ const _ = grpc.SupportPackageIsVersion4
 
 type DemoServiceClient interface {
 	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
+	SayHello2(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
 }
 
 type demoServiceClient struct {
@@ -93,6 +94,14 @@ func NewDemoServiceClient(cc *grpc.ClientConn) DemoServiceClient {
 }
 
 func (c *demoServiceClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
+	out := new(HelloResponse)
+	err := grpc.Invoke(ctx, "/proto.DemoService/SayHello", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+func (c *demoServiceClient) SayHello2(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
 	out := new(HelloResponse)
 	err := grpc.Invoke(ctx, "/proto.DemoService/SayHello", in, out, c.cc, opts...)
 	if err != nil {

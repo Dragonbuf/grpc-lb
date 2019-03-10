@@ -7,11 +7,10 @@ import (
 	"grpc-lb/cmd/config"
 	"strconv"
 	"time"
-
 	"google.golang.org/grpc"
 
-	pb "github.com/wwcd/grpc-lb/cmd/helloworld"
-	grpclb "github.com/wwcd/grpc-lb/etcdv3"
+	pb "grpc-lb/cmd/demo/helloworld"
+	grpclb "grpc-lb/etcdv3"
 )
 
 var (

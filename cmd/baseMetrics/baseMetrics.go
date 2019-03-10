@@ -7,41 +7,30 @@ import (
 	_ "grpc-lb/cmd/config"
 )
 
-var (
-	// Create a metrics registry.
-	reg = prometheus.NewRegistry()
-
-	// Create some standard server metrics.
-	grpcMetrics = grpc_prometheus.NewServerMetrics()
-
-	// Create a customized counter metric.
-	customizedCounterMetric = prometheus.NewCounterVec(prometheus.CounterOpts{
-		Name: "demo_server_say_hello_method_handle_count",
-		Help: "Total number of RPCs handled on the server.",
-	}, []string{"name"})
-)
-
 type InitMetrics struct {
+	Reg *prometheus.Registry
+	GrpcMetrics *grpc_prometheus.ServerMetrics
+	//CustomizedCounterMetric *prometheus.CounterVec
 }
 
-func NewMetrics() *InitMetrics {
-	return &InitMetrics{}
+func NewMetrics(name, help, label string) *InitMetrics {
+	init := &InitMetrics{
+		prometheus.NewRegistry(),
+		grpc_prometheus.NewServerMetrics(),
+		//prometheus.NewCounterVec(prometheus.CounterOpts{
+		//	Name: name,
+		//	Help: help,
+		//}, []string{"naming"}),
+	}
+	init.Reg.MustRegister(init.GrpcMetrics)//,init.CustomizedCounterMetric
+	//init.CustomizedCounterMetric.WithLabelValues(label)
+	return init
 }
 
-func init() {
-	// Register standard server metrics and customized metrics to registry.
-	reg.MustRegister(grpcMetrics, customizedCounterMetric)
-	customizedCounterMetric.WithLabelValues("Test")
-}
-
-func (b *InitMetrics) GetReg() *prometheus.Registry {
-	return reg
-}
-
-func (b *InitMetrics) NewBaseMetrics() *grpc.Server {
+func (b *InitMetrics) GetGrpcServer() *grpc.Server {
 
 	return grpc.NewServer(
-		grpc.StreamInterceptor(grpcMetrics.StreamServerInterceptor()),
-		grpc.UnaryInterceptor(grpcMetrics.UnaryServerInterceptor()),
+		grpc.StreamInterceptor(b.GrpcMetrics.StreamServerInterceptor()),
+		grpc.UnaryInterceptor(b.GrpcMetrics.UnaryServerInterceptor()),
 	)
 }

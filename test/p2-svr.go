@@ -1,20 +1,17 @@
 package main
 
 import (
-	"fmt"
-	"grpc-lb/cmd/baseMetrics"
 	"grpc-lb/cmd/baseServer"
-	"log"
-	"net/http"
-
 	pb "github.com/grpc-ecosystem/go-grpc-prometheus/examples/grpc-server-with-prometheus/protobuf"
+	"google.golang.org/grpc"
+	"github.com/grpc-ecosystem/go-grpc-prometheus"
+	"net/http"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"golang.org/x/net/context"
+	"fmt"
+	"context"
 )
 
-// DemoServiceServer defines a Server.
 type DemoServiceServer struct{
-	Metrics *baseMetrics.InitMetrics
 }
 
 func newDemoServer() *DemoServiceServer {
@@ -34,30 +31,21 @@ func main() {
 	server := baseServer.NewServer("font")
 	lis := server.GetAliveServer()
 
-	metircs := baseMetrics.NewMetrics("hello_method_handle_count","total","name")
-	// 带有 拦截器的 grpc 服务
-	grpcServer := metircs.GetGrpcServer()
+	myServer := grpc.NewServer(
+		grpc.StreamInterceptor(grpc_prometheus.StreamServerInterceptor),
+		grpc.UnaryInterceptor(grpc_prometheus.UnaryServerInterceptor),
+	)
 
-	service := newDemoServer()
-	service.Metrics = metircs
-	//  注册服务
-	pb.RegisterDemoServiceServer(grpcServer, service)
+	myService := newDemoServer()
+	pb.RegisterDemoServiceServer(myServer,myService)
 
 
-	// 初始化 普罗米修斯
-	metircs.GrpcMetrics.InitializeMetrics(grpcServer)
-
-	// Start your http server for prometheus.
 	go func() {
-
-		// Create a HTTP server for prometheus.
-		httpServer := &http.Server{Handler: promhttp.HandlerFor(metircs.Reg, promhttp.HandlerOpts{}), Addr: "0.0.0.0:9092"}
-
-		if err := httpServer.ListenAndServe(); err != nil {
-			log.Fatal("Unable to start a http server.")
-		}
+		http.Handle("/metrics",promhttp.Handler())
+		http.ListenAndServe(":9093",nil)
 	}()
 
+
 	// Start your gRPC server.
-	_ = grpcServer.Serve(lis)
+	_ = myServer.Serve(lis)
 }
