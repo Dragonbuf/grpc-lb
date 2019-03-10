@@ -1,10 +1,21 @@
-
 # 测试
     govendor add +external  添加依赖包至 VENDOR下
 ## 启动ETCD
 ``` 
 ubuntu:
-apt install etcd
+    1、安装
+ETCD_VER=v3.1.0
+DOWNLOAD_URL=https://github.com/coreos/etcd/releases/download
+curl -L ${DOWNLOAD_URL}/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz -o /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
+mkdir -p /tmp/test-etcd && tar xzvf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz -C /tmp/test-etcd --strip-components=1
+/tmp/test-etcd/etcd --version
+/tmp/test-etcd/etcd
+2、增加查看keys
+sudo apt install httpie
+http PUT http://127.0.0.1:2379/v2/keys/message value=="hello, etcd"
+或者
+curl -L http://127.0.0.1:2379/v2/keys/mykey -XPUT -d value="this is awesome"
+登录http://localhost：2379/keys查看keys
 centos:
 yum install etcd
 mac:
