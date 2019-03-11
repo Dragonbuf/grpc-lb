@@ -10,7 +10,6 @@ import (
 	"log"
 	"net/http"
 	_ "net/http"
-	"strings"
 	_ "strings"
 )
 
@@ -112,7 +111,7 @@ func Start() {
 		if v := resp.Kvs[i].Value; v != nil {
 
 			left := string(resp.Kvs[i].Key)[len(Prefix) : len(string(resp.Kvs[i].Key))-1]
-			server := left[0 : len(left)-1-len(string(resp.Kvs[i].Value))]
+			server := left[0 : len(left)-len(string(resp.Kvs[i].Value))]
 
 			//server := strings.TrimRight(strings.TrimLeft(string(resp.Kvs[i].Key), Prefix), string(resp.Kvs[i].Value))
 			svrMap.AddMap(server, string(resp.Kvs[i].Value))
@@ -128,12 +127,12 @@ func Start() {
 			for _, ev := range wresp.Events {
 				switch ev.Type {
 				case mvccpb.PUT:
-					server := strings.TrimRight(strings.TrimLeft(string(ev.Kv.Key), Prefix), string(ev.Kv.Value))
-					fmt.Println(ev.Kv)
+					left := string(ev.Kv.Key)[len(Prefix) : len(string(ev.Kv.Key))-1]
+					server := left[0 : len(left)-len(string(ev.Kv.Value))]
 					svrMap.AddMap(server, string(ev.Kv.Value))
 				case mvccpb.DELETE:
-					fmt.Println(ev.PrevKv)
-					server := strings.TrimRight(strings.TrimLeft(string(ev.PrevKv.Key), Prefix), string(ev.PrevKv.Value))
+					left := string(ev.PrevKv.Key)[len(Prefix) : len(string(ev.PrevKv.Key))-1]
+					server := left[0 : len(left)-len(string(ev.PrevKv.Value))]
 					svrMap.DelMap(server, string(ev.PrevKv.Value))
 				}
 			}
