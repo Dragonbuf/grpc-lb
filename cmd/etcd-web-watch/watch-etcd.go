@@ -14,7 +14,7 @@ import (
 	_ "strings"
 )
 
-var Prefix = "/etcd3_naming"
+var Prefix = "/etcd3_naming/"
 
 type ServiceList struct {
 	Service      []*ServiceAddrs
@@ -110,7 +110,11 @@ func Start() {
 	// 注册 已经上线的服务
 	for i := range resp.Kvs {
 		if v := resp.Kvs[i].Value; v != nil {
-			server := strings.TrimRight(strings.TrimLeft(string(resp.Kvs[i].Key), Prefix), string(resp.Kvs[i].Value))
+
+			left := string(resp.Kvs[i].Key)[len(Prefix) : len(string(resp.Kvs[i].Key))-1]
+			server := left[0 : len(left)-1-len(string(resp.Kvs[i].Value))]
+
+			//server := strings.TrimRight(strings.TrimLeft(string(resp.Kvs[i].Key), Prefix), string(resp.Kvs[i].Value))
 			svrMap.AddMap(server, string(resp.Kvs[i].Value))
 		}
 	}
