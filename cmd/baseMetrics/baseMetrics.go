@@ -8,7 +8,7 @@ import (
 )
 
 type InitMetrics struct {
-	Reg *prometheus.Registry
+	Reg         *prometheus.Registry
 	GrpcMetrics *grpc_prometheus.ServerMetrics
 	//CustomizedCounterMetric *prometheus.CounterVec
 }
@@ -22,12 +22,12 @@ func NewMetrics(name, help, label string) *InitMetrics {
 		//	Help: help,
 		//}, []string{"naming"}),
 	}
-	init.Reg.MustRegister(init.GrpcMetrics)//,init.CustomizedCounterMetric
+	init.Reg.MustRegister(init.GrpcMetrics) //,init.CustomizedCounterMetric
 	//init.CustomizedCounterMetric.WithLabelValues(label)
 	return init
 }
 
-func (b *InitMetrics) GetGpcServer() *grpc.Server {
+func (b *InitMetrics) GetGrpcServer() *grpc.Server {
 
 	return grpc.NewServer(
 		grpc.StreamInterceptor(b.GrpcMetrics.StreamServerInterceptor()),
