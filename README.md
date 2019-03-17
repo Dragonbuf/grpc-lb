@@ -47,7 +47,7 @@ etcd  将会启动在：localhost:2379
     var base = baseServer.NewServer("template_store_service")
     lis := base.GetAliveServer()
     
- ### todo list
+### todo list
     -1 Graceful shutdown 
     0 服务部署上线
     1 服务熔断  (可参考 go-kit + Hystrix)
