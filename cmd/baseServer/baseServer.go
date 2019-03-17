@@ -18,15 +18,14 @@ import (
 )
 
 var (
-	serv   = flag.String("service", "", "service name")
-	host   = flag.String("host", "", "listening host")
-	port   = flag.String("port", "", "listening port")
-	etcd   = flag.String("etcd", config.EtcDHost, "register etcd address")
-	prefix = "/etcd3_naming"
+	serv = flag.String("service", "", "service name")
+	host = flag.String("host", "", "listening host")
+	port = flag.String("port", "", "listening port")
+	etcd = flag.String("etcd", config.EtcDHost, "register etcd address")
 )
 
 type InitServer struct {
-	ServiceName string
+	ServiceName      string
 	ServiceNameSlice []string
 }
 
@@ -35,7 +34,6 @@ type ServiceInfo struct {
 	Host string
 	Port string
 }
-
 
 func NewServer(serName string) *InitServer {
 	return &InitServer{ServiceName: serName}
@@ -78,7 +76,7 @@ func (b *InitServer) GetAliveServer() net.Listener {
 }
 
 // 如果要注册第二个服务，则传递服务名称即可
-func (b *InitServer)RegisterServer(name string)  {
+func (b *InitServer) RegisterServer(name string) {
 	err := grpclb.Register(name, *host, *port, *etcd, time.Second*10, 15)
 	if err != nil {
 		panic(err)
@@ -95,8 +93,6 @@ func (b *InitServer)RegisterServer(name string)  {
 
 	log.Printf("\n starting %s at %s in etcd %s \n", name, *port, *etcd)
 }
-
-
 
 func getLocalIp() string {
 	addrSlice, err := net.InterfaceAddrs()
@@ -125,7 +121,7 @@ func getLocalPort() string {
 		panic(err)
 	}
 
-	resp, err := client.Get(context.Background(), prefix, etcd3.WithPrefix())
+	resp, err := client.Get(context.Background(), config.EtcdPrefix, etcd3.WithPrefix())
 	if err != nil {
 		panic(err)
 	}

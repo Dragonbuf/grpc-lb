@@ -7,14 +7,12 @@ import (
 	etcd3 "github.com/coreos/etcd/clientv3"
 	"github.com/coreos/etcd/mvcc/mvccpb"
 	_ "github.com/coreos/etcd/mvcc/mvccpb"
+	"grpc-lb/cmd/config"
 	"log"
 	"net/http"
 	_ "net/http"
-	"strings"
 	_ "strings"
 )
-
-var Prefix = "/etcd3_naming"
 
 type ServiceList struct {
 	Service      []*ServiceAddrs
@@ -102,7 +100,7 @@ func Start() {
 		fmt.Println(err)
 	}
 
-	resp, err := client.Get(context.Background(), Prefix, etcd3.WithPrefix())
+	resp, err := client.Get(context.Background(), config.EtcdPrefix, etcd3.WithPrefix())
 	if err != nil {
 		panic(err)
 	}
@@ -110,7 +108,11 @@ func Start() {
 	// 注册 已经上线的服务
 	for i := range resp.Kvs {
 		if v := resp.Kvs[i].Value; v != nil {
-			server := strings.TrimRight(strings.TrimLeft(string(resp.Kvs[i].Key), Prefix), string(resp.Kvs[i].Value))
+
+			left := string(resp.Kvs[i].Key)[len(config.EtcdPrefix) : len(string(resp.Kvs[i].Key))-1]
+			server := left[0 : len(left)-len(string(resp.Kvs[i].Value))]
+
+			//server := strings.TrimRight(strings.TrimLeft(string(resp.Kvs[i].Key), Prefix), string(resp.Kvs[i].Value))
 			svrMap.AddMap(server, string(resp.Kvs[i].Value))
 		}
 	}
@@ -118,18 +120,18 @@ func Start() {
 	go func() {
 		// watch 观察是否有服务上线或下线
 		ctx, cancel := context.WithCancel(context.Background())
-		rch := client.Watch(ctx, Prefix, etcd3.WithPrefix(), etcd3.WithPrevKV())
+		rch := client.Watch(ctx, config.EtcdPrefix, etcd3.WithPrefix(), etcd3.WithPrevKV())
 		defer cancel()
 		for wresp := range rch {
 			for _, ev := range wresp.Events {
 				switch ev.Type {
 				case mvccpb.PUT:
-					server := strings.TrimRight(strings.TrimLeft(string(ev.Kv.Key), Prefix), string(ev.Kv.Value))
-					fmt.Println(ev.Kv)
+					left := string(ev.Kv.Key)[len(config.EtcdPrefix) : len(string(ev.Kv.Key))-1]
+					server := left[0 : len(left)-len(string(ev.Kv.Value))]
 					svrMap.AddMap(server, string(ev.Kv.Value))
 				case mvccpb.DELETE:
-					fmt.Println(ev.PrevKv)
-					server := strings.TrimRight(strings.TrimLeft(string(ev.PrevKv.Key), Prefix), string(ev.PrevKv.Value))
+					left := string(ev.PrevKv.Key)[len(config.EtcdPrefix) : len(string(ev.PrevKv.Key))-1]
+					server := left[0 : len(left)-len(string(ev.PrevKv.Value))]
 					svrMap.DelMap(server, string(ev.PrevKv.Value))
 				}
 			}
