@@ -25,5 +25,7 @@ var (
 	MysqlMaxOpenConns = 1000
 
 	//可用逗号分割，开启etcd 集群
-	EtcDHost = "http://localhost:2379"
+	EtcDHost        = "http://localhost:2379"
+	ETCDEndpoints   = []string{"http://localhost:2379"} // etcd 集群配置
+	ETCDDialTimeout = 2 * time.Second                   // etcd 超时时间
 )

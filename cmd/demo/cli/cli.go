@@ -4,10 +4,10 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"google.golang.org/grpc"
 	"grpc-lb/cmd/config"
 	"strconv"
 	"time"
-	"google.golang.org/grpc"
 
 	pb "grpc-lb/cmd/demo/helloworld"
 	grpclb "grpc-lb/etcdv3"
@@ -31,12 +31,14 @@ func main() {
 		panic(err)
 	}
 
-	ticker := time.NewTicker(1000 * time.Millisecond)
-	for t := range ticker.C {
-		client := pb.NewGreeterClient(conn)
-		resp, err := client.SayHello(context.Background(), &pb.HelloRequest{Name: "world " + strconv.Itoa(t.Second())})
-		if err == nil {
-			fmt.Printf("%v: Reply is %s\n", t, resp.Message)
-		}
+	//ticker := time.NewTicker(1000 * time.Millisecond)
+	//for t := range ticker.C {
+	t := time.Now()
+	client := pb.NewGreeterClient(conn)
+	resp, err := client.SayHello(context.Background(), &pb.HelloRequest{Name: "world " + strconv.Itoa(t.Second())})
+	if err == nil {
+		fmt.Printf("%v: Reply is %s\n", t, resp.Message)
 	}
+	fmt.Println(time.Since(t))
+	//}
 }
