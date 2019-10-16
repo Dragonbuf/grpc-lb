@@ -1,5 +1,4 @@
-# 测试
-    govendor add +external  添加依赖包至 VENDOR下
+
 ## 启动ETCD
 ``` 
 ubuntu:
