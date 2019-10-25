@@ -12,6 +12,7 @@ It has these top-level messages:
 	HelloReply
 */
 package helloworld
+
 //protoc --go_out=./ hello.proto
 import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"

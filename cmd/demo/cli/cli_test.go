@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"grpc-lb/cmd/helloworld"
 	"testing"
 	"time"
 
@@ -16,13 +17,13 @@ import (
 func BenchmarkSend(c *testing.B) {
 	flag.Parse()
 
-	r := grpclb.NewResolver(*serv)
+	r := grpclb.NewResolver(*helloworld.serv)
 
 	b := grpc.RoundRobin(r)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 
-	conn, err := grpc.DialContext(ctx, *reg, grpc.WithInsecure(), grpc.WithBalancer(b), grpc.WithBlock())
+	conn, err := grpc.DialContext(ctx, *helloworld.reg, grpc.WithInsecure(), grpc.WithBalancer(b), grpc.WithBlock())
 	cancel()
 	if err != nil {
 		panic(err)

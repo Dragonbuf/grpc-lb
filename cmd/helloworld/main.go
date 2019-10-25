@@ -1,15 +1,15 @@
-package main
+package helloworld
 
 import (
 	"context"
 	"flag"
 	"fmt"
 	"google.golang.org/grpc"
+	"grpc-lb/api/protobuf-spec/helloworld"
 	"grpc-lb/config"
 	"strconv"
 	"time"
 
-	pb "grpc-lb/cmd/demo/helloworld"
 	grpclb "grpc-lb/pkg/etcdv3"
 )
 
@@ -34,8 +34,8 @@ func main() {
 	//ticker := time.NewTicker(1000 * time.Millisecond)
 	//for t := range ticker.C {
 	t := time.Now()
-	client := pb.NewGreeterClient(conn)
-	resp, err := client.SayHello(context.Background(), &pb.HelloRequest{Name: "world " + strconv.Itoa(t.Second())})
+	client := helloworld.NewGreeterClient(conn)
+	resp, err := client.SayHello(context.Background(), &helloworld.HelloRequest{Name: "world " + strconv.Itoa(t.Second())})
 	if err == nil {
 		fmt.Printf("%v: Reply is %s\n", t, resp.Message)
 	}
