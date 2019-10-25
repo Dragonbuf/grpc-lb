@@ -4,13 +4,12 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"grpc-lb/cmd/config"
-	"grpc-lb/cmd/server/templateStore/proto"
+	"grpc-lb/config"
 	"time"
 
 	grpclb "github.com/wwcd/grpc-lb/etcdv3"
 	"google.golang.org/grpc"
-	ts "grpc-lb/cmd/server/templateStore/proto"
+	ts "grpc-lb/internal/app/server/templateStore/proto"
 )
 
 var (
@@ -33,7 +32,7 @@ func main2() {
 
 	ticker := time.NewTicker(1000 * time.Millisecond)
 	for range ticker.C {
-		client := templateStore.NewTemplateStoreClient(conn)
+		client := ts.NewTemplateStoreClient(conn)
 
 		resp, err := client.Get(context.Background(), &ts.ShowRequest{TemplateId: "T_3TYERB8E"})
 		if err == nil {

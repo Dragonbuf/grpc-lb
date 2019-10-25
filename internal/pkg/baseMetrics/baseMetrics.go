@@ -4,7 +4,7 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-prometheus"
 	"github.com/prometheus/client_golang/prometheus"
 	"google.golang.org/grpc"
-	_ "grpc-lb/cmd/config"
+	_ "grpc-lb/config"
 )
 
 type InitMetrics struct {

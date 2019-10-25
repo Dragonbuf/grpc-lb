@@ -13,6 +13,7 @@ import (
 // Prefix should start and end with no slash
 var Prefix = "etcd3_naming"
 var Deregister = make(chan struct{})
+
 ///etcd3_naming/hello_service/
 // Register
 func Register(name, host, port string, target string, interval time.Duration, ttl int) error {
@@ -36,7 +37,7 @@ func Register(name, host, port string, target string, interval time.Duration, tt
 		return fmt.Errorf("grpclb: set service '%s' with ttl to etcd3 failed: %s", name, err.Error())
 	}
 
-	fmt.Printf(serviceKey,serviceValue)
+	fmt.Printf(serviceKey, serviceValue)
 
 	if _, err := client.KeepAlive(context.TODO(), resp.ID); err != nil {
 		return fmt.Errorf("grpclb: refresh service '%s' with ttl to etcd3 failed: %s", name, err.Error())

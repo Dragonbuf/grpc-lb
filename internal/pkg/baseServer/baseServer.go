@@ -6,7 +6,7 @@ import (
 	"fmt"
 	etcd3 "github.com/coreos/etcd/clientv3"
 	grpclb "github.com/wwcd/grpc-lb/etcdv3"
-	"grpc-lb/cmd/config"
+	"grpc-lb/config"
 	"log"
 	"net"
 	"os"

@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	_ "github.com/coreos/etcd/mvcc/mvccpb"
-	"grpc-lb/cmd/etcd-web-watch"
+	"grpc-lb/pkg/etcd-web-watch"
 	_ "net/http"
 	_ "strings"
 )

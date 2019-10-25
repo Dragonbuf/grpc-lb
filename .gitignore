@@ -3,8 +3,8 @@
 *.dll
 *.so
 *.dylib
-cmd/config
-cmd/config/*
+config
+config/*
 
 # Test binary, build with `go test -c`
 *.test

@@ -7,7 +7,7 @@ import (
 	etcd3 "github.com/coreos/etcd/clientv3"
 	"github.com/coreos/etcd/mvcc/mvccpb"
 	_ "github.com/coreos/etcd/mvcc/mvccpb"
-	"grpc-lb/cmd/config"
+	"grpc-lb/config"
 	"log"
 	"net/http"
 	_ "net/http"

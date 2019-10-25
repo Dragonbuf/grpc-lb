@@ -2,12 +2,12 @@ package model
 
 //http://gorm.book.jasperxu.com/
 import (
+	"encoding/json"
 	"errors"
 	_ "github.com/go-sql-driver/mysql"
-	"grpc-lb/tool"
-	_ "grpc-lb/tool"
-	"encoding/json"
 	"github.com/gomodule/redigo/redis"
+	"grpc-lb/internal/pkg/tool"
+	_ "grpc-lb/internal/pkg/tool"
 )
 
 var templateStoreShowCacheKey = "template_store_show_cache"
@@ -37,9 +37,9 @@ func (m *TemplateStoreModel) Get(templateId string) error {
 	// 如果有缓存，则先读取缓存数据
 	redisClient := tool.RedisPool.Get()
 	defer redisClient.Close()
-	resp, err := redis.String(redisClient.Do("get",templateStoreShowCacheKey))
+	resp, err := redis.String(redisClient.Do("get", templateStoreShowCacheKey))
 	if err == nil {
-		err = json.Unmarshal([]byte(resp),m)
+		err = json.Unmarshal([]byte(resp), m)
 		if err == nil {
 			return nil
 		}
@@ -54,7 +54,7 @@ func (m *TemplateStoreModel) Get(templateId string) error {
 	return nil
 }
 
-func (m *TemplateStoreModel) Update()  {
+func (m *TemplateStoreModel) Update() {
 	tx := tool.Mysql.Begin()
 	defer tool.Mysql.Close()
 	tx.Rollback()

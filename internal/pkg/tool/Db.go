@@ -3,7 +3,7 @@ package tool
 import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	"grpc-lb/cmd/config"
+	"grpc-lb/config"
 )
 
 var Mysql *gorm.DB

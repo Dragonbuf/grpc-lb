@@ -5,12 +5,12 @@ import (
 	"flag"
 	"fmt"
 	"google.golang.org/grpc"
-	"grpc-lb/cmd/config"
+	"grpc-lb/config"
 	"strconv"
 	"time"
 
 	pb "grpc-lb/cmd/demo/helloworld"
-	grpclb "grpc-lb/etcdv3"
+	grpclb "grpc-lb/pkg/etcdv3"
 )
 
 var (

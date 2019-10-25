@@ -5,8 +5,7 @@ import (
 	"flag"
 	grpclb "github.com/wwcd/grpc-lb/etcdv3"
 	"google.golang.org/grpc"
-	"grpc-lb/cmd/server/templateStore/proto"
-	ts "grpc-lb/cmd/server/templateStore/proto"
+	ts "grpc-lb/internal/app/server/templateStore/proto"
 	"log"
 	"testing"
 	"time"
@@ -26,7 +25,7 @@ func BenchmarkUploadConfig(n *testing.B) {
 	}
 
 	for i := 0; i < n.N; i++ {
-		client := templateStore.NewTemplateStoreClient(conn)
+		client := ts.NewTemplateStoreClient(conn)
 
 		resp, err := client.Get(context.Background(), &ts.ShowRequest{TemplateId: "T_3TYERB8E"})
 		if err == nil && resp.TemplateId == "" {
