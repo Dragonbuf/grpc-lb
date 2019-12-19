@@ -1,4 +1,4 @@
-package config
+package configs
 
 import "time"
 
@@ -20,12 +20,12 @@ var (
 	RedisMaxIdleTimeout = 5 * time.Second
 
 	// mysql
-	MysqlMasterDns    = "root:1234@/makaplatv4?charset=utf8&parseTime=True&loc=Local"
+	MysqlMasterDns    = "testgroup:testgroupM1@(rm-2zewcem92a9izhw4j5o.mysql.rds.aliyuncs.com:3306)/makaplatv4?charset=utf8&parseTime=True&loc=Local"
 	MysqlMaxIdleConns = 100
 	MysqlMaxOpenConns = 1000
 
 	//可用逗号分割，开启etcd 集群
-	EtcDHost        = "http://localhost:2379"
+	EtcDHost        = "http://127.0.0.1:2379"
 	EtcdPrefix      = "/etcd3_naming"
 	ETCDEndpoints   = []string{"http://localhost:2379"} // etcd 集群配置
 	ETCDDialTimeout = 2 * time.Second                   // etcd 超时时间

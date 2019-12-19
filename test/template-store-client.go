@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"grpc-lb/config"
 	"time"
 
 	grpclb "github.com/wwcd/grpc-lb/etcdv3"

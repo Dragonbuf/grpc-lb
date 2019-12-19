@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"grpc-lb/internal/pkg/baseMetrics"
-	"grpc-lb/internal/pkg/baseServer"
+	"grpc-lb/internal/pkg/loadBalance"
 	"log"
 	"net/http"
 
@@ -30,7 +30,7 @@ func (s *DemoServiceServer) SayHello(ctx context.Context, request *pb.HelloReque
 // NOTE: Graceful shutdown is missing. Don't use this demo in your production setup.
 func main() {
 
-	server := baseServer.NewServer("font")
+	server := loadBalance.NewServer("font")
 	lis := server.GetAliveServer()
 
 	metircs := baseMetrics.NewMetrics("hello_method_handle_count", "total", "name")

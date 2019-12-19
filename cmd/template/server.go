@@ -6,17 +6,14 @@ import (
 	"google.golang.org/grpc"
 	model3 "grpc-lb/internal/app/server/templateStore/model"
 	"grpc-lb/internal/app/server/templateStore/proto"
-	"grpc-lb/internal/pkg/baseServer"
+	"grpc-lb/internal/pkg/loadBalance"
 )
 
 func main() {
-	var base = baseServer.NewServer("template_store_service")
-	lis := base.GetAliveServer()
+	lis := loadBalance.NewServer("template_store_service").ReturnNetListenerWithRegisterLB()
 
 	s := grpc.NewServer()
 	templateStore.RegisterTemplateStoreServer(s, &server{})
-
-	base.RegisterServer("template_store_copy_service")
 	_ = s.Serve(lis)
 }
 

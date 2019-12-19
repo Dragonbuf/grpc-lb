@@ -3,7 +3,7 @@ package tool
 import (
 	"fmt"
 	"github.com/gomodule/redigo/redis"
-	"grpc-lb/config"
+	"grpc-lb/configs"
 	"time"
 )
 
@@ -12,17 +12,17 @@ var RedisPool *redis.Pool
 func init() {
 	fmt.Println("redis pool init")
 	RedisPool = &redis.Pool{
-		MaxIdle:     config.RedisMaxIdle,
-		MaxActive:   config.RedisMaxActive,
-		IdleTimeout: config.RedisMaxIdleTimeout * time.Second,
+		MaxIdle:     configs.RedisMaxIdle,
+		MaxActive:   configs.RedisMaxActive,
+		IdleTimeout: configs.RedisMaxIdleTimeout * time.Second,
 		Wait:        true,
 		Dial: func() (redis.Conn, error) {
-			con, err := redis.Dial("tcp", config.RedisHost,
-				redis.DialPassword(config.RedisPassword),
-				redis.DialDatabase(config.RedisDb),
-				redis.DialConnectTimeout(config.RedisConTimeout),
-				redis.DialReadTimeout(config.RedisReadTimeout),
-				redis.DialWriteTimeout(config.RedisWriteTimeout))
+			con, err := redis.Dial("tcp", configs.RedisHost,
+				redis.DialPassword(configs.RedisPassword),
+				redis.DialDatabase(configs.RedisDb),
+				redis.DialConnectTimeout(configs.RedisConTimeout),
+				redis.DialReadTimeout(configs.RedisReadTimeout),
+				redis.DialWriteTimeout(configs.RedisWriteTimeout))
 			if err != nil {
 				panic(err)
 				return nil, err
@@ -30,14 +30,4 @@ func init() {
 			return con, nil
 		},
 	}
-}
-
-func test() {
-	pool := RedisPool
-	conn := pool.Get()
-	defer pool.Close()
-	if conn.Err() != nil {
-		//TODO
-	}
-
 }

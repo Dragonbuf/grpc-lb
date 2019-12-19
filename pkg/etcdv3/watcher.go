@@ -62,7 +62,7 @@ func (w *watcher) Next() ([]*naming.Update, error) {
 }
 
 func extractAddrs(resp *etcd3.GetResponse) []string {
-	addrs := []string{}
+	var addrs []string
 
 	if resp == nil || resp.Kvs == nil {
 		return addrs

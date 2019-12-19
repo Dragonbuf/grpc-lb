@@ -4,6 +4,7 @@ package model
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gomodule/redigo/redis"
 	"grpc-lb/internal/pkg/tool"
@@ -35,27 +36,22 @@ func (m *TemplateStoreModel) TableName() string {
 
 func (m *TemplateStoreModel) Get(templateId string) error {
 	// 如果有缓存，则先读取缓存数据
-	redisClient := tool.RedisPool.Get()
-	defer redisClient.Close()
-	resp, err := redis.String(redisClient.Do("get", templateStoreShowCacheKey))
+	conn := tool.RedisPool.Get()
+	defer conn.Close()
+	resp, err := redis.Bytes(conn.Do("get", templateStoreShowCacheKey))
 	if err == nil {
-		err = json.Unmarshal([]byte(resp), m)
-		if err == nil {
-			return nil
-		}
+		go fmt.Print("i got from redis \n")
+		return json.Unmarshal(resp, m)
+	} else {
+		fmt.Println(err)
 	}
 
-	defer tool.Mysql.Close()
 	tool.Mysql.First(m, "template_id = ? ", templateId)
 	if m.TemplateId == "" {
 		return errors.New("empty rows")
 	}
+	mJson, _ := json.Marshal(m)
+	_, _ = conn.Do("set", templateStoreShowCacheKey, mJson)
 
 	return nil
-}
-
-func (m *TemplateStoreModel) Update() {
-	tx := tool.Mysql.Begin()
-	defer tool.Mysql.Close()
-	tx.Rollback()
 }

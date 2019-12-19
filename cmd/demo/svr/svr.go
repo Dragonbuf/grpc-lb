@@ -9,7 +9,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	pb "github.com/wwcd/grpc-lb/cmd/helloworld"
 	"google.golang.org/grpc"
-	"grpc-lb/config"
+	config "grpc-lb/configs"
 	grpclb "grpc-lb/pkg/etcdv3"
 	"log"
 	"net"

@@ -5,7 +5,6 @@ go 1.12
 require (
 	github.com/coreos/etcd v3.3.13+incompatible
 	github.com/go-sql-driver/mysql v1.4.1
-	github.com/gogo/protobuf v1.2.1
 	github.com/golang/protobuf v1.3.2
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0

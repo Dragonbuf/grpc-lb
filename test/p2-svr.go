@@ -7,7 +7,7 @@ import (
 	pb "github.com/grpc-ecosystem/go-grpc-prometheus/examples/grpc-server-with-prometheus/protobuf"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"google.golang.org/grpc"
-	"grpc-lb/internal/pkg/baseServer"
+	"grpc-lb/internal/pkg/loadBalance"
 	"net/http"
 )
 
@@ -27,7 +27,7 @@ func (s *DemoServiceServer) SayHello(ctx context.Context, request *pb.HelloReque
 // NOTE: Graceful shutdown is missing. Don't use this demo in your production setup.
 func main() {
 
-	server := baseServer.NewServer("font")
+	server := loadBalance.NewServer("font")
 	lis := server.GetAliveServer()
 
 	myServer := grpc.NewServer(

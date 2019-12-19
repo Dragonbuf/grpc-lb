@@ -1,44 +1,38 @@
-package helloworld
+package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
-	"google.golang.org/grpc"
-	"grpc-lb/api/protobuf-spec/helloworld"
-	"grpc-lb/config"
-	"strconv"
+	templateStore "grpc-lb/internal/app/server/templateStore/proto"
+	"grpc-lb/internal/pkg/loadBalance"
 	"time"
-
-	grpclb "grpc-lb/pkg/etcdv3"
-)
-
-var (
-	serv = flag.String("service", "hello_service", "service name")
-	reg  = flag.String("reg", config.EtcDHost, "register etcd address")
 )
 
 func main() {
-	flag.Parse()
-	r := grpclb.NewResolver(*serv)
 
-	b := grpc.RoundRobin(r)
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	conn, err := grpc.DialContext(ctx, *reg, grpc.WithInsecure(), grpc.WithBalancer(b), grpc.WithBlock())
-	cancel()
+	roundrobinConn, err := loadBalance.NewBaseClient("template_store_service").GetRoundRobinConn()
 	if err != nil {
 		panic(err)
 	}
 
-	//ticker := time.NewTicker(1000 * time.Millisecond)
-	//for t := range ticker.C {
-	t := time.Now()
-	client := helloworld.NewGreeterClient(conn)
-	resp, err := client.SayHello(context.Background(), &helloworld.HelloRequest{Name: "world " + strconv.Itoa(t.Second())})
-	if err == nil {
-		fmt.Printf("%v: Reply is %s\n", t, resp.Message)
+	defer roundrobinConn.Close()
+
+	ticker := time.NewTicker(1000 * time.Millisecond)
+	for t := range ticker.C {
+		ctxc, _ := context.WithTimeout(context.Background(), 2*time.Second)
+		client := templateStore.NewTemplateStoreClient(roundrobinConn)
+
+		resp, _ := client.Get(ctxc, &templateStore.ShowRequest{
+			TemplateId:           "T_49TZW9W7",
+			XXX_NoUnkeyedLiteral: struct{}{},
+			XXX_unrecognized:     nil,
+			XXX_sizecache:        0,
+		})
+
+		go func() {
+			fmt.Print("i got template:" + resp.TemplateId + "in ")
+			fmt.Println(time.Since(t))
+		}()
+
 	}
-	fmt.Println(time.Since(t))
-	//}
 }
