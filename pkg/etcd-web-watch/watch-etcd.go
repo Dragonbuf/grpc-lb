@@ -8,7 +8,7 @@ import (
 	"github.com/coreos/etcd/mvcc/mvccpb"
 	_ "github.com/coreos/etcd/mvcc/mvccpb"
 	"grpc-lb/configs"
-	"log"
+	log "grpc-lb/internal/pkg/log"
 	"net/http"
 	_ "net/http"
 	_ "strings"
@@ -71,7 +71,7 @@ func (svr *ServiceMap) AddMap(svrName string, svrAddr string) {
 func (svr *ServiceMap) DelMap(svrName string, svrAddr string) {
 
 	if svr.svrMap[svrName] == nil {
-		log.Fatal("not found this service:" + svrName)
+		log.GetLogger().Info("not found this service:" + svrName)
 		return
 	}
 
@@ -90,11 +90,8 @@ var svrMap ServiceMap
 
 func Start() {
 
-	var endpoint []string
-	endpoint = append(endpoint, "http://localhost:2379")
-
 	client, err := etcd3.New(etcd3.Config{
-		Endpoints: endpoint,
+		Endpoints: configs.ETCDEndpoints,
 	})
 	if err != nil {
 		fmt.Println(err)
@@ -146,7 +143,7 @@ func Start() {
 		panic(err)
 	}
 
-	fmt.Println("server run in 127.0.0.1:8000")
+	log.GetLogger().Info("server run in 127.0.0.1:8000")
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
