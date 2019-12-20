@@ -153,5 +153,5 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	jsonD, _ := json.Marshal(svrMap.svrMap)
 
 	fmt.Println(string(jsonD))
-	fmt.Fprintln(w, string(jsonD))
+	_, _ = fmt.Fprintln(w, string(jsonD))
 }

@@ -68,8 +68,8 @@ func (r *ResolverBuilder) Watcher(prefix string) {
 			addrList = append(addrList, v)
 		}
 		fmt.Println(addrList)
-		r.cc.NewAddress(addrList)
-		//r.cc.UpdateState(resolver.State{Addresses:     addrList})
+		//r.cc.NewAddress(addrList)
+		r.cc.UpdateState(resolver.State{Addresses: addrList})
 	}
 
 	resp, err := r.etcdClient.Get(context.Background(), prefix, clientv3.WithPrefix())

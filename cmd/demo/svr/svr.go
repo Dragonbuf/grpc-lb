@@ -10,7 +10,7 @@ import (
 	pb "github.com/wwcd/grpc-lb/cmd/helloworld"
 	"google.golang.org/grpc"
 	config "grpc-lb/configs"
-	grpclb "grpc-lb/pkg/etcdv3"
+	etcdv3V2 "grpc-lb/pkg/etcdv3-2"
 	"log"
 	"net"
 	"net/http"
@@ -37,7 +37,8 @@ func main() {
 		panic(err)
 	}
 
-	err = grpclb.Register(*serv, *host, *port, *reg, time.Second*10, 15)
+	hostWithPort := *host + ":" + *port
+	err = etcdv3V2.Register(config.ETCDEndpoints, *serv, hostWithPort, 15)
 	if err != nil {
 		panic(err)
 	}
@@ -47,7 +48,7 @@ func main() {
 	go func() {
 		s := <-ch
 		log.Printf("receive signal '%v'", s)
-		grpclb.UnRegister()
+		etcdv3V2.UnRegister()
 		os.Exit(1)
 	}()
 
@@ -68,9 +69,9 @@ func main() {
 	//s := grpc.NewServer()
 	//pb.RegisterGreeterServer(s, &server{})
 	go func() {
-		http.ListenAndServe("localhost:13001", nil)
+		_ = http.ListenAndServe("localhost:13001", nil)
 	}()
-	s.Serve(lis)
+	_ = s.Serve(lis)
 
 }
 
