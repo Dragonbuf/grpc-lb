@@ -9,7 +9,7 @@ var (
 	IdleTimeout 空闲连接超时时间，但应该设置比redis服务器超时时间短。否则服务端超时了，客户端保持着连接也没用。
 	Wait 这是个很有用的配置:如果超过最大连接，是报错，还是等待。
 	*/
-	RedisHost           = "localhost:6379"
+	RedisHost           = "127.0.0.1:6379"
 	RedisPassword       = ""
 	RedisDb             = 0
 	RedisConTimeout     = 5 * time.Second
@@ -20,7 +20,8 @@ var (
 	RedisMaxIdleTimeout = 5 * time.Second
 
 	// mysql
-	MysqlMasterDns    = "testgroup:testgroupM1@(rm-2zewcem92a9izhw4j5o.mysql.rds.aliyuncs.com:3306)/makaplatv4?charset=utf8&parseTime=True&loc=Local"
+	//MysqlMasterDns    = "testgroup:testgroupM1@(rm-2zewcem92a9izhw4j5o.mysql.rds.aliyuncs.com:3306)/makaplatv4?charset=utf8&parseTime=True&loc=Local"
+	MysqlMasterDns    = "maka:maka123@(test1.maka.im:3306)/makaplatv4?charset=utf8&parseTime=True&loc=Local"
 	MysqlMaxIdleConns = 100
 	MysqlMaxOpenConns = 1000
 

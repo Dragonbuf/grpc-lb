@@ -8,7 +8,7 @@ import (
 	"github.com/coreos/etcd/mvcc/mvccpb"
 	_ "github.com/coreos/etcd/mvcc/mvccpb"
 	"grpc-lb/configs"
-	log "grpc-lb/internal/pkg/log"
+	log "grpc-lb/internal/common/log"
 	"net/http"
 	_ "net/http"
 	_ "strings"

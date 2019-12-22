@@ -16,21 +16,21 @@ func TestStart(t *testing.T) {
 }
 
 func TestServiceMap_AddMap(t *testing.T) {
-	svrMap.AddMap("shit", "127.0.0.1:9000")
+	AddMap("shit", "127.0.0.1:9000")
 
-	if svrMap.svrMap["shit"].TotalService != 1 {
+	if TotalService != 1 {
 		t.Error("测试失败")
 	}
 
-	svrMap.AddMap("shit", "127.0.0.1:9001")
-	if svrMap.svrMap["shit"].TotalService != 2 {
+	AddMap("shit", "127.0.0.1:9001")
+	if TotalService != 2 {
 		t.Error("测试失败")
 	}
 }
 
 func BenchmarkServiceMap_AddMap(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		svrMap.AddMap("i", strconv.Itoa(i))
+		AddMap("i", strconv.Itoa(i))
 	}
 }
 
@@ -42,13 +42,13 @@ func BenchmarkIndexHandler(b *testing.B) {
 }
 
 func TestServiceMap_DelMap(t *testing.T) {
-	svrMap.AddMap("shit", "127.0.0.1:9000")
-	svrMap.DelMap("shit", "127.0.0.1:9000")
+	AddMap("shit", "127.0.0.1:9000")
+	DelMap("shit", "127.0.0.1:9000")
 
-	jsonD, _ := json.Marshal(svrMap.svrMap)
+	jsonD, _ := json.Marshal(svrMap)
 	fmt.Println(string(jsonD))
-	for _, v := range svrMap.svrMap["shit"].Service {
-		if v.ServiceAddr == "127.0.0.1:9000" {
+	for _, v := range Service {
+		if ServiceAddr == "127.0.0.1:9000" {
 			t.Error("fail")
 		}
 	}
@@ -56,8 +56,8 @@ func TestServiceMap_DelMap(t *testing.T) {
 
 func BenchmarkServiceMap_DelMap(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		svrMap.AddMap("i", strconv.Itoa(i))
-		svrMap.DelMap("i", strconv.Itoa(i))
+		AddMap("i", strconv.Itoa(i))
+		DelMap("i", strconv.Itoa(i))
 	}
 }
 

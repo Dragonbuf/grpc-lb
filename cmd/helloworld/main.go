@@ -3,35 +3,25 @@ package main
 import (
 	"context"
 	"fmt"
-	templateStore "grpc-lb/internal/app/server/templateStore/proto"
-	"grpc-lb/internal/pkg/loadBalance"
+	"grpc-lb/api/protobuf-spec/template"
+	"grpc-lb/internal/templateStore/service"
 	"time"
 )
 
 func main() {
 
-	roundrobinConn, err := loadBalance.NewBaseClient("template_store_service").GetRoundRobinConn()
-	if err != nil {
-		panic(err)
-	}
-
-	defer roundrobinConn.Close()
-
-	ticker := time.NewTicker(1000 * time.Millisecond)
-	for t := range ticker.C {
+	for t := range time.NewTicker(1 * time.Second).C {
+		client := service.NewTemplateClient()
 		ctxc, _ := context.WithTimeout(context.Background(), 2*time.Second)
-		client := templateStore.NewTemplateStoreClient(roundrobinConn)
-
-		resp, _ := client.Get(ctxc, &templateStore.ShowRequest{
-			TemplateId:           "T_49TZW9W7",
-			XXX_NoUnkeyedLiteral: struct{}{},
-			XXX_unrecognized:     nil,
-			XXX_sizecache:        0,
+		resp, err := client.Get(ctxc, &template.ShowRequest{
+			TemplateId: "T_08504EOI" + time.Now().Format("2006-01-02 15:04:05"),
 		})
+		if err != nil {
+			panic(err)
+		}
 
 		go func() {
-			fmt.Print("i got template:" + resp.TemplateId + "in ")
-			fmt.Println(time.Since(t))
+			fmt.Println(resp.TemplateId + " : " + time.Since(t).String())
 		}()
 
 	}

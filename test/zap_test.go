@@ -2,7 +2,7 @@ package main
 
 import (
 	"go.uber.org/zap"
-	"grpc-lb/internal/pkg/log"
+	"grpc-lb/internal/common/log"
 	"testing"
 	"time"
 )

@@ -1,16 +1,13 @@
 package main
 
 import (
-	"context"
 	"flag"
-	"fmt"
-	"github.com/grpc-ecosystem/go-grpc-prometheus"
 	_ "github.com/grpc-ecosystem/go-grpc-prometheus"
+	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	pb "github.com/wwcd/grpc-lb/cmd/helloworld"
 	"google.golang.org/grpc"
 	config "grpc-lb/configs"
-	etcdv3V2 "grpc-lb/pkg/etcdv3-2"
+	etcdv3V2 "grpc-lb/internal/common/etcdv3-2"
 	"log"
 	"net"
 	"net/http"
@@ -18,7 +15,6 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 )
 
 var (
@@ -31,7 +27,7 @@ var (
 
 func main() {
 	flag.Parse()
-	*host = getLocalIp()
+	//*host = getLocalIp()
 	lis, err := net.Listen("tcp", net.JoinHostPort(*host, *port))
 	if err != nil {
 		panic(err)
@@ -59,7 +55,7 @@ func main() {
 		grpc.UnaryInterceptor(grpc_prometheus.UnaryServerInterceptor),
 	)
 	// Register your gRPC service implementations.
-	pb.RegisterGreeterServer(s, &server{})
+	//pb.RegisterGreeterServer(s, &server{})
 	// After all your registrations, make sure all of the Prometheus metrics are initialized.
 	grpc_prometheus.Register(s)
 
@@ -79,22 +75,7 @@ func main() {
 type server struct{}
 
 // SayHello implements helloworld.GreeterServer
-func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
-	fmt.Printf("%v: Receive is %s\n", time.Now(), in.Name)
-	return &pb.HelloReply{Message: "Hello " + in.Name + " from " + net.JoinHostPort(*host, *port)}, nil
-}
-
-func getLocalIp() string {
-	addrSlice, err := net.InterfaceAddrs()
-	if nil != err {
-		log.Printf("Get local IP addr failed!!!")
-	}
-	for _, addr := range addrSlice {
-		if ipnet, ok := addr.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
-			if nil != ipnet.IP.To4() {
-				return ipnet.IP.String()
-			}
-		}
-	}
-	return "localhost"
-}
+//func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
+//	fmt.Printf("%v: Receive is %s\n", time.Now(), in.Name)
+//	return &pb.HelloReply{Message: "Hello " + in.Name + " from " + net.JoinHostPort(*host, *port)}, nil
+//}

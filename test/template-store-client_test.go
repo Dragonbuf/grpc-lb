@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	ts "grpc-lb/internal/app/server/templateStore/proto"
-	"grpc-lb/internal/pkg/loadBalance"
+	"grpc-lb/api/protobuf-spec/template"
+	"grpc-lb/internal/common/loadBalance"
 	"log"
 	"testing"
 )
@@ -16,8 +16,8 @@ func BenchmarkUploadConfig(n *testing.B) {
 	}
 
 	for i := 0; i < n.N; i++ {
-		client := ts.NewTemplateStoreClient(roundrobinConn)
-		resp, err := client.Get(context.Background(), &ts.ShowRequest{TemplateId: "T_3TYERB8E"})
+		client := template.NewTemplateStoreClient(roundrobinConn)
+		resp, err := client.Get(context.Background(), &template.ShowRequest{TemplateId: "T_3TYERB8E"})
 		if err == nil && resp.TemplateId == "" {
 			log.Fatal("error ")
 		}

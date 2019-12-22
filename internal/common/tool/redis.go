@@ -9,6 +9,10 @@ import (
 
 var RedisPool *redis.Pool
 
+type Redis struct {
+	pool *redis.Pool
+}
+
 func init() {
 	fmt.Println("redis pool init")
 	RedisPool = &redis.Pool{
@@ -30,4 +34,8 @@ func init() {
 			return con, nil
 		},
 	}
+}
+
+func NewRedis() *Redis {
+	return &Redis{pool: RedisPool}
 }

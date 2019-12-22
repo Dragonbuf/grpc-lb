@@ -3,7 +3,7 @@ package loadBalance
 import (
 	"flag"
 	"grpc-lb/configs"
-	etcdv3V2 "grpc-lb/pkg/etcdv3-2"
+	etcdv3V2 "grpc-lb/internal/common/etcdv3-2"
 	"log"
 	"net"
 	"os"
@@ -21,23 +21,19 @@ var (
 type InitServer struct {
 	ServiceName      string
 	ServiceNameSlice []string
-}
-
-type ServiceInfo struct {
-	Name string
-	Host string
-	Port string
+	Host             string
+	Port             string
 }
 
 func NewServer(serName string) *InitServer {
-	return &InitServer{ServiceName: serName}
+	flag.Parse()
+	return &InitServer{ServiceName: serName, Host: *host, Port: *port}
 }
 
 // 得到一个 tcp 连接, 同时注册到 load balance 上面
 func (b *InitServer) ReturnNetListenerWithRegisterLB() net.Listener {
-	flag.Parse()
 
-	lis, err := net.Listen("tcp", net.JoinHostPort(*host, *port))
+	lis, err := net.Listen("tcp", net.JoinHostPort(b.Host, b.Port))
 	if err != nil {
 		panic(err)
 	}
@@ -48,6 +44,7 @@ func (b *InitServer) ReturnNetListenerWithRegisterLB() net.Listener {
 }
 
 func (b *InitServer) Register(serviceName, hostWithPort string, ttl int) {
+
 	err := etcdv3V2.Register(configs.ETCDEndpoints, serviceName, hostWithPort, ttl)
 	if err != nil {
 		panic(err)
@@ -65,14 +62,14 @@ func (b *InitServer) Register(serviceName, hostWithPort string, ttl int) {
 }
 
 func (b *InitServer) getInputHostWithPort() string {
-	if *host == "" {
+	if b.Host == "" {
 		*host = getLocalIp()
 	}
-	if *port == "" {
+	if b.Port == "" {
 		panic("port can not empty")
 	}
 
-	return *host + ":" + *port
+	return net.JoinHostPort(b.Host, b.Port)
 }
 
 // 如果要注册第二个服务，则传递服务名称即可

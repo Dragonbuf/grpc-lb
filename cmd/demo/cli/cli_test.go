@@ -3,14 +3,11 @@ package main
 import (
 	"context"
 	"flag"
-	"grpc-lb/cmd/helloworld"
 	"testing"
 	"time"
 
 	"google.golang.org/grpc"
 
-	pb "github.com/wwcd/grpc-lb/cmd/helloworld"
-	grpclb "github.com/wwcd/grpc-lb/etcdv3"
 	_ "net/http/pprof"
 )
 

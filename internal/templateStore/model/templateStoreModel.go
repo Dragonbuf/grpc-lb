@@ -7,8 +7,8 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gomodule/redigo/redis"
-	"grpc-lb/internal/pkg/tool"
-	_ "grpc-lb/internal/pkg/tool"
+	"grpc-lb/internal/common/tool"
+	_ "grpc-lb/internal/common/tool"
 )
 
 var templateStoreShowCacheKey = "template_store_show_cache"
@@ -40,7 +40,6 @@ func (m *TemplateStoreModel) Get(templateId string) error {
 	defer conn.Close()
 	resp, err := redis.Bytes(conn.Do("get", templateStoreShowCacheKey))
 	if err == nil {
-		go fmt.Print("i got from redis \n")
 		return json.Unmarshal(resp, m)
 	} else {
 		fmt.Println(err)

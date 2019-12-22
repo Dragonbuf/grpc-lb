@@ -59,7 +59,7 @@ func (r *ResolverBuilder) Build(target resolver.Target, cc resolver.ClientConn, 
 }
 
 func (r *ResolverBuilder) Watcher(prefix string) {
-	fmt.Println("watch :", prefix)
+
 	addrDict := make(map[string]resolver.Address)
 
 	update := func() {
@@ -67,8 +67,6 @@ func (r *ResolverBuilder) Watcher(prefix string) {
 		for _, v := range addrDict {
 			addrList = append(addrList, v)
 		}
-		fmt.Println(addrList)
-		//r.cc.NewAddress(addrList)
 		r.cc.UpdateState(resolver.State{Addresses: addrList})
 	}
 
