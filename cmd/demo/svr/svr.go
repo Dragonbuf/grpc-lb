@@ -7,7 +7,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"google.golang.org/grpc"
 	config "grpc-lb/configs"
-	etcdv3V2 "grpc-lb/internal/common/etcdv3-2"
+	etcdv3V2 "grpc-lb/pkg/etcdv3-2"
 	"log"
 	"net"
 	"net/http"

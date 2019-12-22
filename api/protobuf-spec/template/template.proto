@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package template;
+// The template service definition.
+service Template {
+    //   show
+    rpc Get (ShowRequest) returns (ShowReply) {
+    }
+}
+
+// The request message containing the user's name.
+message ShowRequest {
+    string templateId = 1;
+}
+
+// The response message containing the greetings
+message ShowReply {
+    string templateId = 1;
+}

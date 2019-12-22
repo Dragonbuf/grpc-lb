@@ -1,7 +1,6 @@
-package tool
+package cache
 
 import (
-	"fmt"
 	"github.com/gomodule/redigo/redis"
 	"grpc-lb/configs"
 	"time"
@@ -14,7 +13,6 @@ type Redis struct {
 }
 
 func init() {
-	fmt.Println("redis pool init")
 	RedisPool = &redis.Pool{
 		MaxIdle:     configs.RedisMaxIdle,
 		MaxActive:   configs.RedisMaxActive,

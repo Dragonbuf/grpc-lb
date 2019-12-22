@@ -3,23 +3,27 @@ package main
 import (
 	"context"
 	"grpc-lb/api/protobuf-spec/template"
-	"grpc-lb/internal/common/loadBalance"
-	"log"
+	"grpc-lb/internal/template/service"
 	"testing"
+	"time"
 )
 
-func BenchmarkUploadConfig(n *testing.B) {
-
-	roundrobinConn, err := loadBalance.NewBaseClient("template_store_service").GetRoundRobinConn()
+func TestCanGetTemplate(t *testing.T) {
+	client := service.NewTemplateClient()
+	ctxc, _ := context.WithTimeout(context.Background(), 2*time.Second)
+	_, err := client.Get(ctxc, &template.ShowRequest{TemplateId: "T_08504EOI"})
 	if err != nil {
-		n.Error(err)
+		t.Error(err)
 	}
+}
 
+func BenchmarkGetTemplate(n *testing.B) {
 	for i := 0; i < n.N; i++ {
-		client := template.NewTemplateStoreClient(roundrobinConn)
-		resp, err := client.Get(context.Background(), &template.ShowRequest{TemplateId: "T_3TYERB8E"})
-		if err == nil && resp.TemplateId == "" {
-			log.Fatal("error ")
+		client := service.NewTemplateClient()
+		ctxc, _ := context.WithTimeout(context.Background(), 2*time.Second)
+		_, err := client.Get(ctxc, &template.ShowRequest{TemplateId: "T_08504EOI"})
+		if err != nil {
+			panic(err)
 		}
 	}
 

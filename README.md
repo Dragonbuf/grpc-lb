@@ -19,9 +19,7 @@
 
     5 go install github.com/golang/protobuf/protoc-gen-go
 
-    6 go get github.com/micro/protoc-gen-micro
-
-    7 cd /protos/demo 运行下列命令既可编译出　go 服务端、客户端代码
+    6 cd /protos/demo 运行下列命令既可编译出　go 服务端、客户端代码
         protoc --go_out=plugins=grpc:. hello.proto
 
 ```
@@ -31,4 +29,3 @@
     1 服务熔断  (可参考 go-kit + Hystrix)
     2 服务监控  (可参考 prometheus + alertmanager + grafana)
     3 服务降级
-    4 node + php 完整 client　demo
