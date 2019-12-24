@@ -3,9 +3,7 @@ package service
 import (
 	"context"
 	"errors"
-	"fmt"
 	"grpc-lb/api/protobuf-spec/template"
-	model3 "grpc-lb/internal/template/model"
 	"grpc-lb/pkg/loadBalance"
 	"sync"
 )
@@ -27,15 +25,15 @@ func (t *server) Get(ctx context.Context, in *template.ShowRequest) (*template.S
 	if in.GetTemplateId() == "" {
 		return nil, errors.New("templateIdEmpty")
 	}
-
-	fmt.Println("templateId: " + in.TemplateId)
-	model := model3.NewTemplateStoreModel()
-	err := model.Get(in.GetTemplateId())
-	if err != nil {
-		return nil, err
-	}
-
-	return &template.ShowReply{TemplateId: model.TemplateId}, nil
+	return &template.ShowReply{TemplateId: in.TemplateId}, nil
+	//fmt.Println("templateId: " + in.TemplateId)
+	//model := model3.NewTemplateStoreModel()
+	//err := model.Get(in.GetTemplateId())
+	//if err != nil {
+	//	return nil, err
+	//}
+	//
+	//return &template.ShowReply{TemplateId: model.TemplateId}, nil
 }
 
 func NewTemplateClient() template.TemplateClient {
