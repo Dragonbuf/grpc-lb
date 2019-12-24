@@ -2,7 +2,7 @@
 个人研究的 go grpc 微服务框架
 
 #### 启动项目　（3 步即可）
-> 设置环境变量，防止被墙：export GOPROXY=http://mirrors.aliyun.com/goproxy（win: $env:GOPROXY = "http://mirrors.aliyun.com/goproxy"）
+> 设置环境变量，防止被墙：export GOPROXY=http://mirrors.aliyun.com/goproxy（win: $env:GOPROXY = "http://mirrors.aliyun.com/goproxy" 或 https://goproxy.io）
 
 > cp -R config-example config (需要修改 config 下数据库、redis 密码)
 

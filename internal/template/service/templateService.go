@@ -25,7 +25,9 @@ func (t *server) Get(ctx context.Context, in *template.ShowRequest) (*template.S
 	if in.GetTemplateId() == "" {
 		return nil, errors.New("templateIdEmpty")
 	}
+
 	return &template.ShowReply{TemplateId: in.TemplateId}, nil
+
 	//fmt.Println("templateId: " + in.TemplateId)
 	//model := model3.NewTemplateStoreModel()
 	//err := model.Get(in.GetTemplateId())
