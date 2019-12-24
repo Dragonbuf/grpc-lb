@@ -12,8 +12,6 @@ import (
 
 const schema = "etcdv3_resolver"
 
-var addrs = []string{"localhost:50051", "localhost:50052"}
-
 type ResolverBuilder struct {
 	target     []string
 	service    string
@@ -44,7 +42,7 @@ func (r *ResolverBuilder) Scheme() string {
 func (r *ResolverBuilder) Build(target resolver.Target, cc resolver.ClientConn, opts resolver.BuildOption) (resolver.Resolver, error) {
 
 	client, err := etcd3.New(etcd3.Config{
-		Endpoints: configs.ETCDEndpoints,
+		Endpoints: configs.GetConfig().MustValueArray("etcd", "ETCDEndpoints", ","),
 	})
 	if err != nil {
 		return nil, fmt.Errorf("grpclb: creat etcd3 client failed %v", err)

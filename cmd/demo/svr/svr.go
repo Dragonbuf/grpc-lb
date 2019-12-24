@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-
 	s := baseService.NewBaseService(service.Name)
 	template.RegisterTemplateServer(s.GetGrpcServer(), service.NewTemplateServer())
 	s.StartAndServe()

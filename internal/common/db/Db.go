@@ -9,12 +9,13 @@ import (
 var Mysql *gorm.DB
 
 func init() {
+	cfg := configs.GetConfig()
 	var err error
-	Mysql, err = gorm.Open("mysql", configs.MysqlMasterDns)
+	Mysql, err = gorm.Open("mysql", cfg.MustValue("mysql", "MysqlMasterDns"))
 	if err != nil {
 		panic(err)
 	}
-	Mysql.LogMode(true)
-	Mysql.DB().SetMaxIdleConns(configs.MysqlMaxIdleConns)
-	Mysql.DB().SetMaxOpenConns(configs.MysqlMaxOpenConns)
+	Mysql.LogMode(cfg.MustBool("mysql", "LogMode"))
+	Mysql.DB().SetMaxIdleConns(cfg.MustInt("mysql", "MysqlMaxIdleConns"))
+	Mysql.DB().SetMaxOpenConns(cfg.MustInt("mysql", "MysqlMaxOpenConns"))
 }

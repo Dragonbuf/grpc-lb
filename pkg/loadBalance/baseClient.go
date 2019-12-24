@@ -23,8 +23,7 @@ func NewBaseClient(serviceName string) *BaseClient {
 }
 
 func (c *BaseClient) GetRoundRobinConn() (*grpc.ClientConn, error) {
-
-	r := etcdv3V2.NewResolver(configs.ETCDEndpoints, c.serviceName)
+	r := etcdv3V2.NewResolver(configs.GetConfig().MustValueArray("etcd", "ETCDEndpoints", ","), c.serviceName)
 	resolver.Register(r)
 
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)

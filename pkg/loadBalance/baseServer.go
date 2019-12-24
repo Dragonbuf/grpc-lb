@@ -45,7 +45,7 @@ func (b *InitServer) ReturnNetListenerWithRegisterLB() net.Listener {
 
 func (b *InitServer) Register(serviceName, hostWithPort string, ttl int) {
 
-	err := etcdv3V2.Register(configs.ETCDEndpoints, serviceName, hostWithPort, ttl)
+	err := etcdv3V2.Register(configs.GetConfig().MustValueArray("etcd", "ETCDEndpoints", ","), serviceName, hostWithPort, ttl)
 	if err != nil {
 		panic(err)
 	}
