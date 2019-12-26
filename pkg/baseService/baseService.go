@@ -17,6 +17,7 @@ type BaseService struct {
 
 func NewBaseService(name string) *BaseService {
 	metrics := baseMetrics.NewBaseMetrics()
+
 	return &BaseService{
 		name:       name,
 		metrics:    metrics,
