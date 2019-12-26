@@ -19,7 +19,7 @@ func init() {
 		MaxIdle:     cfg.MustInt("redis", "RedisMaxIdle"),
 		MaxActive:   cfg.MustInt("redis", "RedisMaxActive"),
 		IdleTimeout: time.Duration(cfg.MustInt("redis", "RedisIdleTimeout")) * time.Second,
-		Wait:        true,
+		Wait:        cfg.MustBool("redis", "Wait"),
 		Dial: func() (redis.Conn, error) {
 			con, err := redis.Dial("tcp", cfg.MustValue("redis", "RedisHost"),
 				redis.DialPassword(cfg.MustValue("redis", "RedisPassword")),

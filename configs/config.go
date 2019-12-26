@@ -6,10 +6,9 @@ import (
 import "github.com/Unknwon/goconfig"
 
 var cfg *goconfig.ConfigFile
-var configFilePath = flag.String("conf", "./configs/config.ini", "config path")
+var configFilePath = flag.String("conf", "/data/code/go/grpc-lb/config-dev.ini", "config path")
 
 func init() {
-	flag.Parse()
 	var err error
 	cfg, err = goconfig.LoadConfigFile(*configFilePath)
 	if err != nil {
