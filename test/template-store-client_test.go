@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/afex/hystrix-go/hystrix"
 	"grpc-lb/api/protobuf-spec/template"
 	"grpc-lb/internal/template/service"
@@ -11,12 +12,19 @@ import (
 )
 
 func TestCanGetTemplate(t *testing.T) {
-	client := service.NewTemplateClient()
+
+	client := service.NewTemplateClient(
+		service.WithWarp(hystrix2.GetTemplateGetMiddle()),
+	)
+
 	ctxc, _ := context.WithTimeout(context.Background(), 2*time.Second)
-	_, err := client.Get(ctxc, &template.ShowRequest{TemplateId: "T_08504EOI"})
+	resp, err := client.Get(ctxc, &template.ShowRequest{TemplateId: "T_08504EOI"})
 	if err != nil {
 		t.Error(err)
+	} else {
+		fmt.Println("is there any middle ? :" + resp.TemplateId)
 	}
+
 }
 
 func TestCanGetTemplateWithHystrix(t *testing.T) {

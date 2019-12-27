@@ -28,6 +28,7 @@ require (
 	github.com/pkg/errors v0.8.1
 	github.com/prometheus/client_golang v0.9.3-0.20190127221311-3c4408c8b829
 	github.com/prometheus/client_model v0.0.0-20190129233127-fd36f4220a90 // indirect
+	github.com/smartystreets/goconvey v1.6.4 // indirect
 	go.uber.org/zap v1.13.0
 	golang.org/x/net v0.0.0-20191014212845-da9a3fd4c582
 	google.golang.org/genproto v0.0.0-20190927181202-20e1ac93f88c // indirect

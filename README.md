@@ -29,3 +29,4 @@
     1 服务熔断  (可参考 go-kit + Hystrix)
     2 服务监控  (可参考 prometheus + alertmanager + grafana)
     3 服务降级
+    4 github.com/pkg/errors 来处理 error

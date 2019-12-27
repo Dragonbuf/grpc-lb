@@ -1,9 +1,12 @@
 package hystrix
 
 import (
+	"context"
 	"fmt"
 	"github.com/afex/hystrix-go/hystrix"
 	"github.com/pkg/errors"
+	"grpc-lb/api/protobuf-spec/template"
+	"grpc-lb/internal/template/service"
 	"math/rand"
 	"time"
 )
@@ -43,4 +46,13 @@ func DoTest() error {
 	}, nil)
 
 	return err
+}
+
+func GetTemplateGetMiddle() service.Middle {
+	return func(ctx context.Context, in interface{}) (interface{}, error) {
+		if req, ok := in.(*template.ShowRequest); ok {
+			req.TemplateId = "i am get template get middle : i got you,templateId"
+		}
+		return nil, nil
+	}
 }
