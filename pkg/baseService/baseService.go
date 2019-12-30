@@ -1,6 +1,7 @@
 package baseService
 
 import (
+	_ "github.com/google/wire"
 	"github.com/prometheus/client_golang/prometheus"
 	"google.golang.org/grpc"
 	"grpc-lb/pkg/baseMetrics"
