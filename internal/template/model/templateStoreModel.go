@@ -7,9 +7,9 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gomodule/redigo/redis"
-	"grpc-lb/internal/common/db"
-	_ "grpc-lb/internal/common/db"
 	"grpc-lb/pkg/cache"
+	"grpc-lb/pkg/db"
+	_ "grpc-lb/pkg/db"
 )
 
 var templateStoreShowCacheKey = "_template_"

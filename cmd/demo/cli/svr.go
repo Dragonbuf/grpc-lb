@@ -5,16 +5,19 @@ import (
 	"fmt"
 	"grpc-lb/internal/template/config"
 	"grpc-lb/pkg/cache"
-	"testing"
+	db2 "grpc-lb/pkg/db"
+	_ "net/http/pprof"
 )
 
-func TestConfig(t *testing.T) {
+func main() {
 	flag.Parse()
 	if err := config.InitConf(); err != nil {
-		t.Error(err)
+		panic(err)
 	}
-	fmt.Println(config.Conf.Redis)
+
 	redis := cache.NewRedisPool(config.Conf.Redis)
-	conn := redis.Get()
-	defer conn.Close()
+	db := db2.NewMysql(config.Conf.Mysql)
+
+	fmt.Println(redis, db)
+
 }

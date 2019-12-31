@@ -9,6 +9,8 @@ import (
 	"net"
 )
 
+type BaseServiceOptions func(s *BaseService)
+
 type BaseService struct {
 	name       string
 	grpcServer *grpc.Server
@@ -16,14 +18,20 @@ type BaseService struct {
 	lis        net.Listener
 }
 
-func NewBaseService(name string) *BaseService {
+func NewBaseService(name string, opts ...BaseServiceOptions) *BaseService {
 	metrics := baseMetrics.NewBaseMetrics()
 
-	return &BaseService{
+	s := &BaseService{
 		name:       name,
 		metrics:    metrics,
 		grpcServer: metrics.GetGrpcServer(),
 		lis:        loadBalance.NewServer(name).ReturnNetListenerWithRegisterLB()}
+
+	for _, opts := range opts {
+		opts(s)
+	}
+
+	return s
 }
 
 func (s *BaseService) GetGrpcServer() *grpc.Server {
