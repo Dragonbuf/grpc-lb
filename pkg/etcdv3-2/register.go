@@ -6,7 +6,21 @@ import (
 	"github.com/coreos/etcd/clientv3"
 )
 
+type Config struct {
+	ETCDEndpoints []string
+}
+
 var Deregister = make(chan struct{})
+
+func NewClient(c *Config) *clientv3.Client {
+	cli, err := clientv3.New(clientv3.Config{
+		Endpoints: c.ETCDEndpoints,
+	})
+	if err != nil {
+		panic(err)
+	}
+	return cli
+}
 
 // Register
 func Register(etcdEndpoints []string, service, hostWithPort string, ttl int) error {
